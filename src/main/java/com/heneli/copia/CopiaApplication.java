@@ -4,6 +4,7 @@ import com.heneli.copia.db.PickupJdbcRepository;
 import com.heneli.copia.db.RecipientJdbcRepository;
 import com.heneli.copia.model.Pickup;
 import com.heneli.copia.model.Recipient;
+import com.heneli.copia.schedule.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -40,12 +41,21 @@ public class CopiaApplication implements CommandLineRunner {
 		recipientJdbcRepository.findAll()
 				.forEach(recipients::add);
 
+		Schedule schedule = new Schedule(pickups, recipients);
 
 		Pickup pickup = pickups.get(0);
-		Recipient recipient = recipients.get(0);
+		List<Recipient> matches = schedule.findMatches(pickup, recipients);
 
-		System.out.println("Pickup #1: " + pickup);
-		System.out.println("Recipient #1: " + recipient);
+		System.out.println(matches.size()
+				+ " matches with "
+				+ pickup.getFirstName() + " "
+				+ pickup.getLastName() + ":" );
 
+		matches.forEach(recipient -> System.out.println("Recipient #"
+				+ recipient.getRecipientId()
+				+ ": "
+				+ recipient.getFirstName()
+				+ " "
+				+ recipient.getLastName()));
 	}
 }
