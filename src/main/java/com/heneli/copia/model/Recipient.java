@@ -3,6 +3,7 @@ package com.heneli.copia.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
 @Entity
 public class Recipient extends User {
 

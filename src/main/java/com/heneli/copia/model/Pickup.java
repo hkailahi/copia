@@ -11,8 +11,10 @@ import java.time.ZonedDateTime;
 
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
 @Entity
-public class Pickup {
+public class Pickup extends User {
 
     @Id
     private int pickupId;
