@@ -1,6 +1,6 @@
 package com.heneli.copia;
 
-import com.heneli.copia.db.Pickup;
+import com.heneli.copia.model.Pickup;
 import com.heneli.copia.model.Recipient;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

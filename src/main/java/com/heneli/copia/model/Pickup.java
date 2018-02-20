@@ -1,4 +1,4 @@
-package com.heneli.copia.db;
+package com.heneli.copia.model;
 
 import lombok.*;
 
