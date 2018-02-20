@@ -57,5 +57,13 @@ public class CopiaApplication implements CommandLineRunner {
 				+ recipient.getFirstName()
 				+ " "
 				+ recipient.getLastName()));
+
+//		List<Match> matches = Schedule.computeMatches(pickups, recipients);
+//		List<Delivery> deliveries = Schedule.computeDeliveries(matches);
+
+		// matchesJdbcRepository.insert(matches);
+		// deliveryJdbcRepository.insert(deliveries);
+
+		// csv-ify matches and deliveries
 	}
 }
