@@ -29,11 +29,17 @@ public class Recipient extends User {
     private int Saturday;
 
     public boolean accepts(Pickup pickup) {
-        return (pickup.getCategories() ^ this.getRestrictions()) != 0;
+        // Let 'food accepted' = 'all food' xor 'food rejected'
+        // If 'food accepted' & 'food provided' != 0,
+        // Then the 'food provided' is a subset of 'food accepted'
+        // Thus, recipient does reject the food provided by pickup
+
+        // all food = 63 = 0b111111, single bit for each category/restriction
+        return ((63 ^ this.getRestrictions()) & pickup.getCategories()) != 0;
     }
 
     public int countAccepts(Pickup pickup) {
-        return countSetBits(pickup.getCategories() ^ this.getRestrictions());
+        return countSetBits((63 ^ this.getRestrictions()) & pickup.getCategories());
     }
 
     public int countSetBits(int n) { // Kernighan's algorithm
@@ -49,25 +55,29 @@ public class Recipient extends User {
 
     public boolean isOpenAt(LocalDateTime pickupAt) {
         DayOfWeek day = pickupAt.getDayOfWeek();
-        int pickupTime = 2 ^ pickupAt.getHour();
+        int pickupTime = (int) Math.pow(2, pickupAt.getHour()-8); // recipient 0th bit=8-9 AM .. 16th-bit=11-12 AM
 
         switch (day) {
             case MONDAY:
-                return (pickupTime & this.getMonday()) != 0;
+                return isOpenAt(pickupTime, this.getMonday());
             case TUESDAY:
-                return (pickupTime & this.getTuesday()) != 0;
+                return isOpenAt(pickupTime, this.getTuesday());
             case WEDNESDAY:
-                return (pickupTime & this.getWednesday()) != 0;
+                return isOpenAt(pickupTime, this.getWednesday());
             case THURSDAY:
-                return (pickupTime & this.getThursday()) != 0;
+                return isOpenAt(pickupTime, this.getThursday());
             case FRIDAY:
-                return (pickupTime & this.getFriday()) != 0;
+                return isOpenAt(pickupTime, this.getFriday());
             case SATURDAY:
-                return (pickupTime & this.getSaturday()) != 0;
+                return isOpenAt(pickupTime, this.getSaturday());
             case SUNDAY:
-                return (pickupTime & this.getSunday()) != 0;
+                return isOpenAt(pickupTime, this.getSunday());
             default:
                 throw new IllegalArgumentException("Not a day of the week.");
         }
+    }
+
+    public boolean isOpenAt(int pickupTime, int openTimes) {
+        return (pickupTime & openTimes) != pickupTime;
     }
 }
