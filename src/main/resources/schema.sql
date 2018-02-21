@@ -18,7 +18,10 @@ CREATE TABLE IF NOT EXISTS pickups (
   TimeZoneId VARCHAR(50)
 )
 AS SELECT *
-FROM CSVREAD('/Users/hkailahi/dev/scrap/src/main/resources/Backend Challenge/Pickups.csv');
+FROM CSVREAD('classpath:Backend Challenge/Pickups.csv');
+-- https://stackoverflow.com/questions/5474665/load-csv-file-located-in-the-classpath-for-h2-database
+-- https://stackoverflow.com/questions/4784859/how-to-access-csv-file-within-war-using-h2s-csvread-function-query/4790910#4790910
+-- FROM CSVREAD('/Users/hkailahi/dev/scrap/src/main/resources/Backend Challenge/Pickups.csv');
 
 -- https://stackoverflow.com/questions/30596150/how-to-use-a-path-relative-to-project-root-to-h2-db-file-configuration-with-play
 
@@ -46,6 +49,7 @@ CREATE TABLE IF NOT EXISTS recipients (
   Saturday INT
 )
 AS SELECT *
-FROM CSVREAD('/Users/hkailahi/dev/scrap/src/main/resources/Backend Challenge/Recipients.csv');
+FROM CSVREAD('classpath:Recipients.csv');
+-- FROM CSVREAD('/Users/hkailahi/dev/scrap/src/main/resources/Backend Challenge/Recipients.csv');
 
 ALTER TABLE recipients ADD IF NOT EXISTS RecipientId int auto_increment;
