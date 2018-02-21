@@ -22,6 +22,7 @@ I decided to let a database handle parsing the CSV rather than rolling my own pa
   - 40ish entries have -7, with others -8
     - daylight savings happened on Nov 6 in 2016?
       - https://www.timeanddate.com/time/change/usa/new-york?year=2016
+       
         ```
         Nov 6, 2016 - Daylight Saving Time Ended
         When local daylight time was about to reach
@@ -35,6 +36,7 @@ I decided to let a database handle parsing the CSV rather than rolling my own pa
         More info:
         USA & Canada: DST Ends on Nov 6, 2016
         ```
+        
 - Came up with OO design sketch and rough/first-take algo
   - [Algorithm and OO design sketch](docs/img/initial_oo_algo_sketch.jpg)
   - OO
@@ -42,6 +44,7 @@ I decided to let a database handle parsing the CSV rather than rolling my own pa
     - I renamed "pickup" to "provider" as I believe it is more intuitive
   - Algo
     - Pseudo-code
+    
     ```java
     public List<Recipient> findSortedMatches(Provider p, Recipients allRecips) { // allRecips = rs if FP
         List sortedMatches = allRecips.stream()
@@ -55,9 +58,11 @@ I decided to let a database handle parsing the CSV rather than rolling my own pa
         return sortedMatches;
       } // sort is O(n log n), sortedMatches is O(n) space
       ```
+    
       - MOST-MATCH-NOTES: This is weird, maybe I want most matches for simplicity or maybe I want 6-dimension sort requiring smallest number of drop-offs or I want that but favor shortest distance chain with multiple deliveries over multiple
         - this could go after timecheck and incorporate it, depends on what I decide
       - Could do all sorts at bottom or in another algo
+      
       ```java
       public List<Recipient> findMatches(Provider p, Recipients allRecips) { // allRecips = rs if FP
           List sortedMatches = allRecips.stream()
@@ -76,7 +81,7 @@ I decided to let a database handle parsing the CSV rather than rolling my own pa
         return sortedMatches;
       }
       ```
-        - sortMatches is likely more complicated
+      
 - Program Run steps
 
 ```
