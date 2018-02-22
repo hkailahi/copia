@@ -4,7 +4,7 @@
 
 I want to see if it is worth implementing a k-sum (generalization version of the 2Sum, 3Sum) variant for finding the best matches.
 
-In a typical scenario I would perform this operation on a sorted list of either integers or values with integer weights. As I need to match bitvectors, only perfect complements can be found easily in this polynomial time [(O(n^(k/2) log^n) where k is 6)][1]. Thus, I am charting Pickup-to-Recipient pairs to see whether or not perfect complements exist in pickups that cannot be fulfilled with a single recipient.
+In a typical scenario I would perform this operation on a sorted list of either integers or values with integer weights. As I need to match bitvectors, only perfect complements can be found easily in this polynomial time ([O(n^(k/2) log n)][1] where k is 6). Thus, I am charting Pickup-to-Recipient pairs to see whether or not perfect complements exist in pickups that cannot be fulfilled with a single recipient.
 
 The method of using perfect complements would save a lot of computation in exchange for a small amount of space. (By caching occurences of complementary values)
 
@@ -16,20 +16,27 @@ If there are cases where no grouping of qualified recipients exists to consume a
 
 - // TODO - explain method
 ```
-	λ: import Data.Bits
-	λ: printBinAnd 60 (xor 63 7)
-		Decimal      Binary
-		   60         111100
-	&	   56         111000
-	------------------------------
-		   56         111000
-
-	λ: printBinAnd 60 (xor 63 58)
-		Decimal      Binary
-		   60         111100
-	&	    5         000101
-	------------------------------
-		    4         000100
+    λ: import Data.Bits
+    λ: printBinAnd 60 (xor 63 7)
+    	Decimal      Binary
+    	   60         111100            <-- Provided, what pickup provides
+    &	   56         111000            <-- Accepts, what recipient doesn't restrict
+    ------------------------------
+    	   56         111000            <-- Takes, what recipient takes from food provided
+    λ: printBinAnd 60 (xor 63 58)
+    	Decimal      Binary
+    	   60         111100
+    &	    5         000101
+    ------------------------------
+    	    4         000100
+    λ: printBinOr 56 4
+    	Decimal      Binary
+    	   56         111000            <-- Takes #1
+    |	    4         000100            <-- Takes #2
+    ------------------------------
+    	   60         111100            <-- All Taken
+    
+    λ: 60 == 60         <-- If 'Provided' == 'All Taken', a full match has been made
 ```
 
 ## 1. Julia Horton
@@ -52,6 +59,7 @@ If there are cases where no grouping of qualified recipients exists to consume a
 **Categories**
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | 60 | 111100 |
@@ -77,6 +85,7 @@ Target Value
 ## 2. Joseph Brown
 
 19 matches with Joseph Brown who is giving categories: 47 and whose pickup time is: TUESDAY at 15 (128 as shifted bitstring)
+
 |Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 8 | Ruth Thornell	 | 44	 | 3795
@@ -139,7 +148,8 @@ Target Value
 ## 3. Alex Fondren
 
 13 matches with Alex Fondren who is giving categories: 63 and whose pickup time is: WEDNESDAY at 15 (128 as shifted bitstring)
-|Recipient # | Full Name | Restrictions | Time Code |
+
+| Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 2 | Elizabeth Jimenez	 | 28	 | 7301
 | 13 | Tanya Wolff	 | 45	 | 48686
@@ -160,11 +170,13 @@ Target Value
 **Categories**
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | 63 | 111111 |
 
 **Restrictions**
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 28 |  35 | 100011 |
@@ -189,6 +201,7 @@ Target Value
 ## 4. James Whitehouse
 
 5 matches with James Whitehouse who is giving categories: 22 and whose pickup time is: WEDNESDAY at 13 (32 as shifted bitstring)
+
 |Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 47 | Nereida Seely	 | 46	 | 58909
@@ -202,11 +215,13 @@ Target Value
 **Categories**
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | 22 | 10110 |
 
 **Restrictions**
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 46 | 16 | 10000 |
@@ -225,6 +240,7 @@ Target Value
 ## 5. Anna Shapiro
 
 9 matches with Anna Shapiro who is giving categories: 59 and whose pickup time is: MONDAY at 12 (16 as shifted bitstring)
+
 |Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 1 | Tanya Matthews	 | 7	 | 19514
@@ -242,11 +258,13 @@ Target Value
 **Categories** 
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | 59 | 111011 |
 
 **Restrictions**
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 7) | 56 | 111000 |   <-
@@ -281,6 +299,7 @@ Target Value
 ## 6. Lessie Whitlock
 
 15 matches with Lessie Whitlock who is giving categories: 58 and whose pickup time is: SATURDAY at 20 (4096 as shifted bitstring)
+
 |Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 1 | Tanya Matthews	 | 7	 | 19514
@@ -304,11 +323,13 @@ Target Value
 **Categories**
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- | 
 | 58 | 111010 |
 
 **Restrictions**
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 7) | 56 | 111000 |   <-
@@ -335,7 +356,8 @@ Target Value
 ## 7. Carroll Keys
 
 5 matches with Carroll Keys who is giving categories: 21 and whose pickup time is: THURSDAY at 20 (4096 as shifted bitstring)
-|Recipient # | Full Name | Restrictions | Time Code |
+
+| Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 3 | Palmer Morales	 | 15	 | 25889
 | 60 | Roger Stewart	 | 7	 | 43824
@@ -348,11 +370,13 @@ Target Value
 **Categories**
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | 21 | 010101 |
 
 **Restrictions**
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 15 | 16 | 010000 |   <-
@@ -372,7 +396,8 @@ Target Value
 ## 8. Hazel Preston
 
 25 matches with Hazel Preston who is giving categories: 62 and whose pickup time is: SUNDAY at 10 (4 as shifted bitstring)
-|Recipient # | Full Name | Restrictions | Time Code |
+
+| Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 5 | Beverly Caldwell	 | 6	 | 12793
 | 7 | Eric Torres	 | 49	 | 30648
@@ -405,11 +430,13 @@ Target Value
 **Categories**
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | 62 | 111110 |
 
 **Restrictions**
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 6)| 56 | 111000 |
@@ -444,7 +471,8 @@ Target Value
 ## 9. David Long
 
 8 matches with David Long who is giving categories: 53 and whose pickup time is: THURSDAY at 11 (8 as shifted bitstring)
-|Recipient # | Full Name | Restrictions | Time Code |
+
+| Recipient # | Full Name | Restrictions | Time Code |
 | -- | -- | -- | -- |
 | 26 | Johnny Messina	 | 13	 | 9833
 | 27 | Malcolm Miller	 | 51	 | 54177
@@ -460,11 +488,13 @@ Target Value
 **Categories**
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | 53 | 110101 |
 
 **Restrictions**
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 13 | 48 | 110000 |
