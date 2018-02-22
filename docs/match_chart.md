@@ -54,9 +54,7 @@ If there are cases where no grouping of qualified recipients exists to consume a
 | 126 | Janet Hardison	 | 21	 | 57624
 | 135 | Treva Bryant	 | 19	 | 28504
 
-### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
 
@@ -64,7 +62,7 @@ Target Value
 | -- | -- |
 | 60 | 111100 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -77,7 +75,8 @@ Target Value
 | 21 | 40 | 101000 |
 | 19 | 44 | 101100 |
 
-**Notes**
+#### Notes
+
 - Perfect two sum match exists
   (7)   56         111000
   (58)   4         000100
@@ -108,16 +107,16 @@ Target Value
 | 144 | Brian Manchester	 | 21	 | 27282
 | 148 | Amy Doyle	 | 4	 | 34551
 
-###### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
+
 | Decimal | Binary |
 | -- | -- |
 | Target | 47 | 101111 |
 
-**Restrictions** 
+#### Restrictions
+
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
 | 44 |  3 | 000011 |
@@ -140,7 +139,8 @@ Target Value
 | 21 | 42 | 101010 |
 | 4 | 43 | 101011 |   <-
 
-**Notes**
+#### Notes
+
 - Perfect two sum match exists
   (59)   4         000100
   (4)   43         101011
@@ -165,9 +165,7 @@ Target Value
 | 136 | Charles Wilson	 | 51	 | 53260
 | 139 | Malka Weathersby	 | 45	 | 10136
 
-###### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
 
@@ -175,7 +173,7 @@ Target Value
 | -- | -- |
 | 63 | 111111 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -192,7 +190,8 @@ Target Value
 | 51 |  12 | 001100 |
 | 45 |  18 | 010010 |
 
-**Notes**
+#### Notes
+
 - No perfect two sum noticed
 - Two delivery pair exists
   (8)   55         110111
@@ -210,9 +209,7 @@ Target Value
 | 133 | Richard King	 | 46	 | 62441
 | 134 | Hazel Pledger	 | 60	 | 7179
 
-###### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
 
@@ -220,7 +217,7 @@ Target Value
 | -- | -- |
 | 22 | 10110 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -230,7 +227,8 @@ Target Value
 | 46 | 16 | 10000 |
 | 60 |  2 | 00010 |
 
-**Notes**
+#### Notes
+
 - No complete match exists
   - Third bit is zero in all scenarios
 - Best partial delivery
@@ -253,9 +251,7 @@ Target Value
 | 121 | Frank Barcenas	 | 38	 | 58915
 | 147 | Ira Maxwell	 | 11	 | 2860
 
-###### Categories vs (not) Restrictions
-
-**Categories** 
+#### Categories
 
 Target Value
 
@@ -263,7 +259,7 @@ Target Value
 | -- | -- |
 | 59 | 111011 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -277,7 +273,8 @@ Target Value
 | 38 | 25 | 011001 |   <-
 | 11 | 48 | 110000 |   <-
 
-**Notes**
+#### Notes
+
 - No perfect two sum noticed
 - Two delivery pair exists
   (7)   56         111000
@@ -318,9 +315,7 @@ Target Value
 | 144 | Brian Manchester	 | 21	 | 27282
 | 147 | Ira Maxwell	 | 11	 | 2860
 
-###### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
 
@@ -328,7 +323,7 @@ Target Value
 | -- | -- | 
 | 58 | 111010 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -348,7 +343,8 @@ Target Value
 | 21 | 42 | 101010 |
 | 11 | 48 | 110000 |
 
-**Notes**
+#### Notes
+
 - Perfect two sum exists
   (3)   56         111000
   (60)   2         000010
@@ -365,9 +361,7 @@ Target Value
 | 90 | Margaret Danis	 | 58	 | 4579
 | 115 | Chester Smart	 | 39	 | 16861
 
-###### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
 
@@ -375,7 +369,7 @@ Target Value
 | -- | -- |
 | 21 | 010101 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -385,7 +379,8 @@ Target Value
 | 58 |  5 | 000101 |   <-
 | 39 | 16 | 010000 |   <-
 
-**Notes**
+#### Notes
+
 - Several perfect two sum exists
   (58)   5         000101   <-
   (39)  16         010000   <-
@@ -425,9 +420,7 @@ Target Value
 | 138 | Mary Thomas	 | 10	 | 45416
 | 140 | Stacey Sutton	 | 21	 | 17242
 
-###### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
 
@@ -435,7 +428,7 @@ Target Value
 | -- | -- |
 | 62 | 111110 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -465,7 +458,7 @@ Target Value
 | 10| 52 | 110100 |
 | 21| 42 | 101010 |
 
-**Notes**
+#### Notes
 
 
 ## 9. David Long
@@ -483,9 +476,7 @@ Target Value
 | 129 | Kathy Myers	 | 31	 | 10499
 | 149 | Gertrude Duprey	 | 3	 | 26678
 
-###### Categories vs (not) Restrictions
-
-**Categories**
+#### Categories
 
 Target Value
 
@@ -493,7 +484,7 @@ Target Value
 | -- | -- |
 | 53 | 110101 |
 
-**Restrictions**
+#### Restrictions
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
@@ -506,7 +497,7 @@ Target Value
 | 31 | 32 | 100000 |
 | 3) | 52 | 110100 |
 
-**Notes**
+#### Notes
 
 
 # Deliveries that can't be made without more than one recipient
