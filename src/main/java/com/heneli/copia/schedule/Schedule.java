@@ -10,15 +10,27 @@ import java.util.stream.Collectors;
 
 public class Schedule {
 
+//    @Autowired
+//    MatchJdbcRepository matchJdbcRepository;
+
     private List<Pickup> pickups;
     private List<Recipient> recipients;
     private List<Match> matches;
     private Map<Integer, List<Match>> matchMap;
 
+    public Map<Integer, List<Match>> getMatchMap() {
+        return matchMap;
+    }
+
+    public List<Match> getMatches(Pickup pickup) {
+        return matchMap.get(pickup.getPickupId());
+    }
+
     public Schedule(List<Pickup> pickups, List<Recipient> recipients) {
         this.pickups = pickups;
         this.recipients = recipients;
         this.matches = new ArrayList<>();
+//        this.matchMap = new HashMap<>();
         this.matchMap = new ConcurrentHashMap<>();
         generateSchedule(pickups, recipients);
     }
@@ -33,7 +45,7 @@ public class Schedule {
         Map<Integer, List<Recipient>> nonSingleMatchMap = new HashMap<>();
         List<Pickup> filteredPickups = new ArrayList<>();
 
-        System.out.println("Generating single recipient matches...");
+        System.out.print("Generating single recipient matches...");
         for (Pickup pickup : pickups) {
             List<Recipient> rs = qualifiedRecipientMap.get(pickup.getPickupId());
 
@@ -42,7 +54,7 @@ public class Schedule {
                 continue;
             }
 
-            List<List<Recipient>> singleDeliveryCandidates = getSingleDeliveryMatches(pickup, rs);
+            List<List<Recipient>> singleDeliveryCandidates = getOneRecipientMatches(pickup, rs);
             List<Recipient> singleMatches = singleDeliveryCandidates.get(0);
             List<Match> singleDeliveryMatches = new ArrayList<>();
 
@@ -51,41 +63,82 @@ public class Schedule {
             } else {
                 for (Recipient recipient : singleMatches) {
                     List<Recipient> singleMatch = Arrays.asList(recipient);
-                    singleDeliveryMatches.add(new Match(pickup, singleMatch));
+                    Match ins = new Match(pickup, singleMatch);
+                    singleDeliveryMatches.add(ins);
                 }
             }
 
             nonSingleMatchMap.put(pickup.getPickupId(), singleDeliveryCandidates.get(1));
 
-            matchMap.put(pickup.getPickupId(), singleDeliveryMatches);
-        }
+            if (singleDeliveryCandidates != null) {
+                if (singleDeliveryMatches.size() != 0) {
+//                    List<Match> updateMatches = matchMap.get(pickup.getPickupId());
+//                    updateMatches.addAll(singleDeliveryMatches);
 
-        System.out.println("Generating two recipient matches...");
+                    matchMap.put(pickup.getPickupId(), singleDeliveryMatches);
+                }
+            }
+        }
+        System.out.print("   Done.\n");
+
+        System.out.print("Generating two recipient matches...");
         pickups.parallelStream().forEach((pickup -> {
             List<Match> m = getTwoRecipientMatches(pickup, nonSingleMatchMap.get(pickup.getPickupId()));
             if (m != null) {
-                matchMap.put(pickup.getPickupId(), m);
+                if (m.size() > 0) {
+                    List<Match> updateMatches = matchMap.get(pickup.getPickupId());
+                    if (updateMatches == null) updateMatches = new ArrayList<>();
+                    updateMatches.addAll(m);
+
+                    matchMap.put(pickup.getPickupId(), updateMatches);
+                }
             }
         }));
+        System.out.print("   Done.\n");
 
-        System.out.println("Generating three recipient matches...");
+        System.out.print("Generating three recipient matches...");
         pickups.parallelStream().forEach((pickup -> {
             List<Match> m = getThreeRecipientMatches(pickup, nonSingleMatchMap.get(pickup.getPickupId()));
             if (m != null) {
-                matchMap.put(pickup.getPickupId(), m);
+                if (m.size() > 0) {
+                    List<Match> updateMatches = matchMap.get(pickup.getPickupId());
+                    if (updateMatches == null) updateMatches = new ArrayList<>();
+                    updateMatches.addAll(m);
+
+                    matchMap.put(pickup.getPickupId(), updateMatches);
+                }
             }
         }));
+        System.out.print("   Done.\n");
 
-        System.out.println("Generating four recipient matches. This may take a few minutes...");
-        pickups.parallelStream().forEach(pickup -> {
-            List<Match> m = getFourRecipientMatches(pickup, nonSingleMatchMap.get(pickup.getPickupId()));
+//        System.out.print("Generating four recipient matches. This may take a couple minutes...");
+//        pickups.parallelStream().forEach(pickup -> {
+//            List<Match> m = getFourRecipientMatches(pickup, nonSingleMatchMap.get(pickup.getPickupId()));
+//            if (m != null) {
+//                if (m.size() > 0) {
+//                    List<Match> updateMatches = matchMap.get(pickup.getPickupId());
+//                    if (updateMatches == null) updateMatches = new ArrayList<>();
+//                    updateMatches.addAll(m);
+//
+//                    matchMap.put(pickup.getPickupId(), updateMatches);
+//                }
+//            }
+//        });
+//        System.out.print("   Done.\n");
 
-            if (m != null) {
-                matchMap.put(pickup.getPickupId(), m);
+    }
+
+    public void storeMatches() {
+        for (Pickup p : pickups) {
+            List<Match> m = matchMap.get(p.getPickupId());
+            try {
+                for (Match match : m) {
+//                    matchJdbcRepository.insert(match);
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        });
-
-        System.out.println("Done.");
+        }
     }
 
     public void printMatches() {
@@ -108,16 +161,16 @@ public class Schedule {
                 .collect(Collectors.toList());
     }
 
-    // sorts matches for one pickup
-    public static List<Recipient> sortMatches(Pickup p, List<Recipient> matches) {
-        matches.sort(Comparator.comparingDouble(o -> o.distance(p)));
-        matches.sort(Comparator.comparingDouble(o -> o.countAccepts(p)));
-        return matches;
-    }
+//    // sorts matches for one pickup
+//    public static List<Recipient> sortMatches(Pickup p, List<Recipient> matches) {
+//        matches.sort(Comparator.comparingDouble(o -> o.distance(p)));
+//        matches.sort(Comparator.comparingDouble(o -> o.countAccepts(p)));
+//        return matches;
+//    }
 
     // TODO - how do i return List<Match> while removing single matches from recipients
     // maybe answer here -> https://stackoverflow.com/questions/30042222/remove-and-collect-elements-with-java-streams
-    public List<List<Recipient>> getSingleDeliveryMatches(Pickup p, List<Recipient> rs) {
+    public List<List<Recipient>> getOneRecipientMatches(Pickup p, List<Recipient> rs) {
         List<Recipient> singleMatch = new ArrayList<>();
         List<Recipient> nonSingleMatch = new ArrayList<>();
 
@@ -126,7 +179,7 @@ public class Schedule {
         for (Recipient r : rs) {
             int aV = 63 ^ r.getRestrictions(); //accept vector
 
-            if (matchOne(pV, aV)) { // if providing is a subset of restrictions
+            if (BinaryMatchUtil.matchOne(pV, aV)) { // if providing is a subset of restrictions
                 singleMatch.add(r);
             } else {
                 nonSingleMatch.add(r);
@@ -151,7 +204,7 @@ public class Schedule {
                 if (r1 == r2) continue;
                 int a2V = 63 ^ r2.getRestrictions();
 
-                if (matchTwo(pV, a1V, a2V)) {
+                if (BinaryMatchUtil.matchTwo(pV, a1V, a2V)) {
                     List<Recipient> recipientsPair = Arrays.asList(r1, r2);
                     recipientsPair.sort((o1, o2) -> Double.compare(p.distance(o1), p.distance(o2)));
 
@@ -180,7 +233,7 @@ public class Schedule {
                     int a2V = 63 ^ r2.getRestrictions();
                     int a3V = 63 ^ r3.getRestrictions();
 
-                    if (matchThree(pV, a1V, a2V, a3V)) {
+                    if (BinaryMatchUtil.matchThree(pV, a1V, a2V, a3V)) {
                         List<Recipient> recipientsTriple = Arrays.asList(r1, r2, r3);
                         recipientsTriple.sort((o1, o2) -> Double.compare(p.distance(o1), p.distance(o2)));
 
@@ -213,7 +266,7 @@ public class Schedule {
                         int a3V = 63 ^ r3.getRestrictions();
                         int a4V = 63 ^ r4.getRestrictions();
 
-                        if (matchFour(pV, a1V, a2V, a3V, a4V)) {
+                        if (BinaryMatchUtil.matchFour(pV, a1V, a2V, a3V, a4V)) {
                             List<Recipient> recipientsTriple = Arrays.asList(r1, r2, r3, r4);
                             recipientsTriple.sort((o1, o2) -> Double.compare(p.distance(o1), p.distance(o2)));
 
@@ -228,67 +281,4 @@ public class Schedule {
 
         return new ArrayList<>(quadMatches);
     }
-
-    // Slower due to nested parallelStream and synchronizing on tripleMatches add operation
-    public List<Match> parallelGetFourRecipientMatches(Pickup p, List<Recipient> rs) {
-        Set<Match> quadMatches = new ConcurrentHashMap<>().newKeySet();
-
-        int pV = p.getCategories();
-
-        rs.parallelStream().forEach(r1 -> {
-            rs.parallelStream().forEach(r2 -> {
-                rs.parallelStream().forEach(r3 -> {
-                    rs.parallelStream().forEach(r4 -> {
-                        int a1V = 63 ^ r1.getRestrictions();
-                        int a2V = 63 ^ r2.getRestrictions();
-                        int a3V = 63 ^ r3.getRestrictions();
-                        int a4V = 63 ^ r4.getRestrictions();
-                        if (matchFour(pV, a1V, a2V, a3V, a4V)) {
-                            List<Recipient> recipientsTriple = Arrays.asList(r1, r2, r3, r4);
-                            recipientsTriple.sort((o1, o2) -> Double.compare(p.distance(o1), p.distance(o2)));
-
-                            Match fourRecipientMatch = new Match(p, recipientsTriple);
-
-                            quadMatches.add(fourRecipientMatch);
-                        }
-                    });
-                });
-            });
-        });
-
-        return new ArrayList<>(quadMatches);
-    }
-
-    private static boolean matchOne(int provide, int accept) {
-        return (provide & accept) == provide;
-    }
-
-    private static boolean matchTwo(int provide, int accept1, int accept2) {
-        boolean smallerMatch = matchOne(provide, accept1)
-                                    || matchOne(provide, accept2);
-        if (smallerMatch) return false;
-
-        return (provide & (accept1 | accept2)) == provide;
-    }
-
-    private static boolean matchThree(int provide, int accept1, int accept2, int accept3) {
-        boolean smallerMatch = matchTwo(provide, accept1, accept2)
-                                    || matchTwo(provide, accept1, accept3)
-                                    || matchTwo(provide, accept2, accept3);
-        if (smallerMatch) return false;
-
-        return  (provide & (accept1 | accept2 | accept3)) == provide;
-    }
-
-
-    private static boolean matchFour(int provide, int accept1, int accept2, int accept3, int accept4) {
-        boolean smallerMatch = matchThree(provide, accept1, accept2, accept3)
-                                    || matchThree(provide, accept1, accept2, accept4)
-                                    || matchThree(provide, accept1, accept3, accept4)
-                                    || matchThree(provide, accept2, accept3, accept4);
-        if (smallerMatch) return false;
-
-        return  (provide & (accept1 | accept2 | accept3 | accept4)) == provide;
-    }
-
 }

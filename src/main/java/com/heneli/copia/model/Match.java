@@ -13,6 +13,7 @@ public class Match {
     @Transient
     private List<Recipient> recipientList;
 
+    private long matchId;
     private int pickupId;
     private Integer recipientId1, recipientId2, recipientId3, recipientId4, recipientId5, recipientId6;
     private int deliveries; // number of recipients this match will visit
@@ -38,5 +39,9 @@ public class Match {
         this.recipientId4 = (recipientList.size() > 3) ? recipientList.get(3).getRecipientId() : null;
         this.recipientId5 = (recipientList.size() > 4) ? recipientList.get(4).getRecipientId() : null;
         this.recipientId6 = (recipientList.size() > 5) ? recipientList.get(5).getRecipientId() : null;
+    }
+
+    public Match() {
+
     }
 }

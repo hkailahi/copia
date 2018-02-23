@@ -23,8 +23,8 @@ public class PickupJdbcRepository {
         return jdbcTemplate.query("select * from pickups", new PickupRowMapper());
     }
 
-    public int deleteById(long id) {
-        return jdbcTemplate.update("delete from pickups where id=?", new Object[] {
+    public int deleteById(int id) {
+        return jdbcTemplate.update("delete from pickups where PickupId=?", new Object[] {
                 id
         });
     }

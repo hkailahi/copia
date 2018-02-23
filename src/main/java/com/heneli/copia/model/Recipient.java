@@ -5,8 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
@@ -14,10 +12,9 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper=true)
 @ToString(callSuper=true)
-@Entity
+
 public class Recipient extends User {
 
-    @Id
     private int recipientId;
     private int restrictions;
     private int Sunday;
