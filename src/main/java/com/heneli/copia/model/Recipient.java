@@ -55,29 +55,33 @@ public class Recipient extends User {
 
     public boolean isOpenAt(LocalDateTime pickupAt) {
         DayOfWeek day = pickupAt.getDayOfWeek();
-        int pickupTime = (int) Math.pow(2, pickupAt.getHour()-8); // recipient 0th bit=8-9 AM .. 16th-bit=11-12 AM
+        int pickupHour = 1 << (pickupAt.getHour()-8); // recipient 0th bit=8-9 AM .. 16th-bit=11-12 AM
+
+        if (pickupAt.getMinute() > 0 || pickupAt.getSecond() > 0) {
+            pickupHour |= 1 << (pickupAt.getHour() - 7); // ex. 8:30 to 9:30 = 0b00..011
+        }
 
         switch (day) {
             case MONDAY:
-                return isOpenAt(pickupTime, this.getMonday());
+                return isOpenAt(pickupHour, this.getMonday());
             case TUESDAY:
-                return isOpenAt(pickupTime, this.getTuesday());
+                return isOpenAt(pickupHour, this.getTuesday());
             case WEDNESDAY:
-                return isOpenAt(pickupTime, this.getWednesday());
+                return isOpenAt(pickupHour, this.getWednesday());
             case THURSDAY:
-                return isOpenAt(pickupTime, this.getThursday());
+                return isOpenAt(pickupHour, this.getThursday());
             case FRIDAY:
-                return isOpenAt(pickupTime, this.getFriday());
+                return isOpenAt(pickupHour, this.getFriday());
             case SATURDAY:
-                return isOpenAt(pickupTime, this.getSaturday());
+                return isOpenAt(pickupHour, this.getSaturday());
             case SUNDAY:
-                return isOpenAt(pickupTime, this.getSunday());
+                return isOpenAt(pickupHour, this.getSunday());
             default:
                 throw new IllegalArgumentException("Not a day of the week.");
         }
     }
 
     public boolean isOpenAt(int pickupTime, int openTimes) {
-        return (pickupTime & openTimes) != pickupTime;
+        return (pickupTime & openTimes) == pickupTime;
     }
 }

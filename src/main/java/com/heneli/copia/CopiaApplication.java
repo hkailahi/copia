@@ -43,22 +43,9 @@ public class CopiaApplication implements CommandLineRunner {
 
 		Schedule schedule = new Schedule(pickups, recipients);
 
-		Pickup pickup = pickups.get(0);
-		List<Recipient> matches = schedule.findMatches(pickup, recipients);
+//		schedule.printMatches();
 
-		System.out.println(matches.size()
-				+ " matches with "
-				+ pickup.getFirstName() + " "
-				+ pickup.getLastName() + ":" );
-
-		matches.forEach(recipient -> System.out.println("Recipient #"
-				+ recipient.getRecipientId()
-				+ ": "
-				+ recipient.getFirstName()
-				+ " "
-				+ recipient.getLastName()));
-
-//		List<Match> matches = Schedule.computeMatches(pickups, recipients);
+//		List<Match> matches = schedule.getMatchList();
 //		List<Delivery> deliveries = Schedule.computeDeliveries(matches);
 
 		// matchesJdbcRepository.insert(matches);

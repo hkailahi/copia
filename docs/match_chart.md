@@ -8,13 +8,73 @@ In a typical scenario I would perform this operation on a sorted list of either 
 
 The method of using perfect complements would save a lot of computation in exchange for a small amount of space. (By caching occurences of complementary values)
 
-If there are cases where no grouping of qualified recipients exists to consume all of the food provided by a pickup, I will not use this algorithm. (Conclusion: I didn't.)
+If there are cases where no grouping of qualified recipients exists to consume all of the food provided by a pickup, I will not use this algorithm. (Conclusion: I didn't. A k-sum solution may exist that doesn't rely on perfect complements.)
 
-[1]: https://cs.stackexchange.com/questions/2973/generalised-3sum-k-sum-problem 
+[1]: https://cs.stackexchange.com/questions/2973/generalised-3sum-k-sum-problem
+
+1: 9
+2: 35
+3: 18
+4: 0
+5: 5
+6: 15
+7: 4
+8: 46
+9: 5
+1: 4
+2: 29
+3: 26
+4: 0
+5: 5
+6: 42
+7: 0
+8: 169
+9: 3
+
+## Deliveries that can't be made without more than one recipient
+
+1 - Pickup #9 Julia Horton Food: 60 Pickup Time: TUESDAY at 11 (8 as shifted bitstring)
+
+2 - NO FOOD - Pickup #10 Dorothy Robbins has no food to give.
+
+3 - Pickup #22 Joseph Brown Food: 47 Pickup Time: TUESDAY at 15 (128 as shifted bitstring)
+
+4 - NO FOOD - Pickup #29 Mark Ruiz has no food to give.
+
+5 - Pickup #53 Alex Fondren Food: 63 Pickup Time: WEDNESDAY at 15 (128 as shifted bitstring)
+
+6 - Pickup #60 James Whitehouse Food: 22 Pickup Time: WEDNESDAY at 13 (32 as shifted bitstring)
+
+7 - Pickup #71 Anna Shapiro Food: 59 Pickup Time: MONDAY at 12 (16 as shifted bitstring)
+
+8 - NO FOOD - Pickup #82 Karrie Rush has no food to give.
+
+9 - Pickup #150 Lessie Whitlock Food: 58 Pickup Time: SATURDAY at 20 (4096 as shifted bitstring)
+
+10 - Pickup #152 Carroll Keys Food: 21 Pickup Time: THURSDAY at 20 (4096 as shifted bitstring)
+
+11 - Pickup #161 Hazel Preston Food: 62 Pickup Time: SUNDAY at 10 (4 as shifted bitstring)
+
+12 - Pickup #184 David Long Food: 53 Pickup Time: THURSDAY at 11 (8 as shifted bitstring)
 
 ## Bitwise Check Method
 
 - // TODO - explain method
+
+- Example of perfect match with one recipient
+
+```
+		λ: import Data.Bits
+		λ: printBinAnd 45 (xor 63 16)
+			Decimal      Binary
+			   45         101101
+		&	   47         101111
+		------------------------------
+			   45         101101
+```
+
+- Example of perfect two sum match (two delivery match)
+
 ```
     λ: import Data.Bits
     λ: printBinAnd 60 (xor 63 7)
@@ -35,7 +95,7 @@ If there are cases where no grouping of qualified recipients exists to consume a
     |	    4         000100            <-- Takes #2
     ------------------------------
     	   60         111100            <-- All Taken
-    
+
     λ: 60 == 60         <-- If 'Provided' == 'All Taken', a full match has been made
 ```
 
@@ -320,7 +380,7 @@ Target Value
 Target Value
 
 | Decimal | Binary |
-| -- | -- | 
+| -- | -- |
 | 58 | 111010 |
 
 #### Restrictions
@@ -387,6 +447,7 @@ Target Value
   - several more
 - Other non (overlapping) two delivery matches exist
   - Basically (58) 5 000101 with anything else
+- No 3 sums if you exclude 2 sums
 
 ## 8. Hazel Preston
 
@@ -432,11 +493,11 @@ Target Value
 
 | Restrictions | Takes | Takes (Binary) |
 | -- | -- | -- |
-| 6)| 56 | 111000 |
+| 6 | 56 | 111000 |		<--
 | 49| 14 | 001110 |
 | 50| 12 | 001100 |
 | 29| 34 | 100010 |
-| 56|  6 | 000110 |
+| 56|  6 | 000110 |		<--
 | 52| 10 | 001010 |
 | 21| 42 | 101010 |
 | 60|  2 | 000010 |
@@ -460,6 +521,9 @@ Target Value
 
 #### Notes
 
+- Perfect two sum match exists
+   6  56  111000
+   56  6  000110
 
 ## 9. David Long
 
@@ -492,62 +556,13 @@ Target Value
 | 51 |  4 | 000100 |
 | 40 | 21 | 010101 |
 | 37 | 16 | 010000 |
-| 60 |  1 | 000001 |
+| 60 |  1 | 000001 |	<--
 | 38 | 17 | 010001 |
 | 31 | 32 | 100000 |
-| 3) | 52 | 110100 |
+| 3  | 52 | 110100 |	<--
 
 #### Notes
 
-
-# Deliveries that can't be made without more than one recipient
-
-1: Pickup #9 Julia Horton has no perfect matches. He/She is giving categories: 60 and whose pickup time is: TUESDAY at 11 (8 as shifted bitstring)
-
-2: Pickup #10 Dorothy Robbins has no perfect matches. He/She is giving categories: 0 and whose pickup time is: SUNDAY at 12 (16 as shifted bitstring)
-
-3: Pickup #22 Joseph Brown has no perfect matches. He/She is giving categories: 47 and whose pickup time is: TUESDAY at 15 (128 as shifted bitstring)
-
-4: Pickup #29 Mark Ruiz has no perfect matches. He/She is giving categories: 0 and whose pickup time is: THURSDAY at 11 (8 as shifted bitstring)
-
-5: Pickup #53 Alex Fondren has no perfect matches. He/She is giving categories: 63 and whose pickup time is: WEDNESDAY at 15 (128 as shifted bitstring)
-
-6: Pickup #60 James Whitehouse has no perfect matches. He/She is giving categories: 22 and whose pickup time is: WEDNESDAY at 13 (32 as shifted bitstring)
-
-7: Pickup #71 Anna Shapiro has no perfect matches. He/She is giving categories: 59 and whose pickup time is: MONDAY at 12 (16 as shifted bitstring)
-
-8: Pickup #82 Karrie Rush has no perfect matches. He/She is giving categories: 0 and whose pickup time is: SATURDAY at 9 (2 as shifted bitstring)
-
-9: Pickup #150 Lessie Whitlock has no perfect matches. He/She is giving categories: 58 and whose pickup time is: SATURDAY at 20 (4096 as shifted bitstring)
-
-10: Pickup #152 Carroll Keys has no perfect matches. He/She is giving categories: 21 and whose pickup time is: THURSDAY at 20 (4096 as shifted bitstring)
-
-11: Pickup #161 Hazel Preston has no perfect matches. He/She is giving categories: 62 and whose pickup time is: SUNDAY at 10 (4 as shifted bitstring)
-
-12: Pickup #184 David Long has no perfect matches. He/She is giving categories: 53 and whose pickup time is: THURSDAY at 11 (8 as shifted bitstring)
-
-# Deliveries that can't be made without more than one recipient
-
-1 - Pickup #9 Julia Horton Food: 60 Pickup Time: TUESDAY at 11 (8 as shifted bitstring)
-
-2 - NO FOOD - Pickup #10 Dorothy Robbins has no food to give.
-
-3 - Pickup #22 Joseph Brown Food: 47 Pickup Time: TUESDAY at 15 (128 as shifted bitstring)
-
-4 - NO FOOD - Pickup #29 Mark Ruiz has no food to give.
-
-5 - Pickup #53 Alex Fondren Food: 63 Pickup Time: WEDNESDAY at 15 (128 as shifted bitstring)
-
-6 - Pickup #60 James Whitehouse Food: 22 Pickup Time: WEDNESDAY at 13 (32 as shifted bitstring)
-
-7 - Pickup #71 Anna Shapiro Food: 59 Pickup Time: MONDAY at 12 (16 as shifted bitstring)
-
-8 - NO FOOD - Pickup #82 Karrie Rush has no food to give.
-
-9 - Pickup #150 Lessie Whitlock Food: 58 Pickup Time: SATURDAY at 20 (4096 as shifted bitstring)
-
-10 - Pickup #152 Carroll Keys Food: 21 Pickup Time: THURSDAY at 20 (4096 as shifted bitstring)
-
-11 - Pickup #161 Hazel Preston Food: 62 Pickup Time: SUNDAY at 10 (4 as shifted bitstring)
-
-12 - Pickup #184 David Long Food: 53 Pickup Time: THURSDAY at 11 (8 as shifted bitstring)
+- Perfect two sum match exists
+	 60   1  000001
+	 3   52  110100
