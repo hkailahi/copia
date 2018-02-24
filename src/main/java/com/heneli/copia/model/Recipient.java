@@ -1,10 +1,7 @@
 package com.heneli.copia.model;
 
 import com.heneli.copia.util.BinMatchers;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -26,6 +23,18 @@ public class Recipient extends User {
     private int Friday;
     private int Saturday;
 
+    public Recipient(int recipientId, int restrictions, int sunday, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday) {
+        this.recipientId = recipientId;
+        this.restrictions = restrictions;
+        Sunday = sunday;
+        Monday = monday;
+        Tuesday = tuesday;
+        Wednesday = wednesday;
+        Thursday = thursday;
+        Friday = friday;
+        Saturday = saturday;
+    }
+
     public boolean accepts(Pickup pickup) {
         // Let 'food accepted' = 'all food' xor 'food rejected'
         // If 'food accepted' & 'food provided' != 0,
@@ -35,22 +44,6 @@ public class Recipient extends User {
         // all food = 63 = 0b111111, single bit for each category/restriction
         int aV = 63 ^ this.getRestrictions(), pV = pickup.getCategories();
         return (pV & aV) != 0;
-    }
-
-    public int countAccepts(Pickup pickup) {
-        int aV = 63 ^ this.getRestrictions(), pV = pickup.getCategories();
-        return  countSetBits(pV & aV);
-    }
-
-    public int countSetBits(int n) { // Kernighan's algorithm
-        int count = 0;
-
-        while (n != 0) {
-            n &= (n - 1);
-            count++;
-        }
-
-        return count;
     }
 
     public boolean isOpenAt(LocalDateTime pickupAt) {
@@ -82,6 +75,6 @@ public class Recipient extends User {
     }
 
     public boolean isOpenAt(int pickupTime, int openTimes) {
-        return BinMatchers.isOneToOneBinMatch(pickupTime, openTimes);
+        return BinMatchers.isOnlyOneToOneBinMatch(pickupTime, openTimes);
     }
 }
