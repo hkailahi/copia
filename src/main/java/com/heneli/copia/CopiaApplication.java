@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,10 @@ public class CopiaApplication implements CommandLineRunner {
 	RecipientJdbcRepository recipientJdbcRepository;
 	@Autowired
 	MatchJdbcRepository matchJdbcRepository;
+
+	@Autowired
+	private ConfigurableApplicationContext context;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(CopiaApplication.class, args);
@@ -55,12 +60,20 @@ public class CopiaApplication implements CommandLineRunner {
 				});
 		System.out.print("   Done.\n");
 
-		System.out.print("Writing matches to CSV...");
-		// TODO - write to csvs
+		System.out.print("Writing matches to CSV. This will take several minutes...");
+		/* == NOTE: For sorted matches - comment out this line out and uncomment the one below == */
+		matchJdbcRepository.exportMatchesToCSV();
+//		matchJdbcRepository.exportSortedMatchesToCSV();
 		System.out.print("   Done.\n");
 
-		System.out.println("All match making complete!\n");
-		System.out.println("You can run your own queries on the database at http://localhost:8080/h2");
-		System.out.println("To stop the server, press control-c twice.");
+		System.out.println("All match-making is complete!\n");
+
+		/* == NOTE: To run queries in H2, comment out this line out and uncomment the last two lines == */
+		/* == Please note, you will have to manually shut down the server! == */
+		SpringApplication.exit(context);
+
+//		System.out.println("You can run your own queries on the database at http://localhost:8080/h2");
+//		System.out.println("To stop the server, press control-c twice.");
 	}
+
 }

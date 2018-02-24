@@ -1,5 +1,6 @@
 package com.heneli.copia.model;
 
+import com.heneli.copia.util.BinMatchers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -32,11 +33,13 @@ public class Recipient extends User {
         // Thus, recipient does reject the food provided by pickup
 
         // all food = 63 = 0b111111, single bit for each category/restriction
-        return ((63 ^ this.getRestrictions()) & pickup.getCategories()) != 0;
+        int aV = 63 ^ this.getRestrictions(), pV = pickup.getCategories();
+        return (pV & aV) != 0;
     }
 
     public int countAccepts(Pickup pickup) {
-        return countSetBits((63 ^ this.getRestrictions()) & pickup.getCategories());
+        int aV = 63 ^ this.getRestrictions(), pV = pickup.getCategories();
+        return  countSetBits(pV & aV);
     }
 
     public int countSetBits(int n) { // Kernighan's algorithm
@@ -79,6 +82,6 @@ public class Recipient extends User {
     }
 
     public boolean isOpenAt(int pickupTime, int openTimes) {
-        return (pickupTime & openTimes) == pickupTime;
+        return BinMatchers.isOneToOneBinMatch(pickupTime, openTimes);
     }
 }

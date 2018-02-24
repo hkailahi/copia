@@ -1,6 +1,7 @@
 package com.heneli.copia.db;
 
 import com.heneli.copia.model.Match;
+import com.heneli.copia.model.Pickup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -70,4 +71,15 @@ public class MatchJdbcRepository {
                     match.getRecipientId5(),
                     match.getRecipientId6());
     }
+
+    public void exportMatchesToCSV() {
+        jdbcTemplate.update("CALL CSVWRITE('matches.csv', 'SELECT * FROM matches');");
+    }
+
+    public void exportSortedMatchesToCSV() {
+        jdbcTemplate.update("CALL CSVWRITE('ordered_matches.csv', 'SELECT * FROM matches "
+                + "ORDER BY PickupId, Deliveries, Distance')");
+    }
+
+
 }
