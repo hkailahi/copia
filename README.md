@@ -30,4 +30,34 @@ Welcome to Copia! This is a simplified scheduling algorithm for matches food don
     - [Results analysis]()
     - [Conclusion]()
 
+# Configuration]
 
+# How to run
+
+# Rules
+
+# Implementation Details
+
+## Server
+### Overview
+#### Core Datatypes
+
+#### Model
+
+#### Schedule
+
+#####Algorithm
+
+## Database]()
+        - [Overview]()
+            - [jdbcTemplate]()
+            - 
+        - [Tables]()
+- [How I made it]()
+    - [Initial thoughts]()
+    - [Plans]()
+    - [Approach]()
+    - [Unit test results]()
+    - [Overall result]()
+    - [Results analysis]()
+    - [Conclusion]()
