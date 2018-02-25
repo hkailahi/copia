@@ -1,15 +1,5 @@
 # Initial Thoughts + Activity Log
 
-### Summary
-
-The first major finding I had was the one-way, 1-to-many relationship between a pickup and recipients. Initially I thought that the algorithm needed would be a two-sided scheduling problem. Thankfully it becomes much simpler by representing pickups (domain) map to recipients (codomain) as no pickup is reliant on information between a recipient's mapping to itself or other pickups.
-
-I decided to let a database handle parsing the CSV rather than rolling my own parser. Postgres supports a ```timestamptz```, or ```timestamp with time zone```, datatype which handles ISO 8601 temporal data, including the UTC offset.
-
-// TODO describe notes below
-
-### Notes
-
 - Is latest time inclusive? If I have 9 AM pickup (thus 10 latest) do I need recipients to be open from 9-10 and 10-11?
 - Loaded data into Postgres and inspected
   - Noticed -8:00 and -7:00 appended to timezones

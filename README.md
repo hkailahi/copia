@@ -139,11 +139,11 @@ A schedule creates and populates a mapping from pickups to matches. To do this, 
 # How I Made It
 ## Initial thoughts
 
-// TODO - summarize first thoughts from initial_thoughts.md and link to it for further exploration
+Please see all initial thoughts [here](docs/initial_thoughts.md)!
 
-## Plans
+Starting off, I thought that a match-making algorithm would be a two-sided scheduling problem. Instead, I found it better to represent a match as a one-way, 1-to-many relationship from a pickup to recipients. Thus, the problem becomes much simpler as no pickup is reliant on information between a recipient's mapping to itself or other pickups.
 
-// TODO - summarize first sketches from initial_thoughts.md and link to it for further exploration
+Below are some sketches of what I thought my program would look like before I wrote any code.
 
 ![Screenshot of Algo and Objects sketch](docs/img/initial_oo_algo_sketch.jpg)
 ![Screenshot of DB Sketch](docs/img/initial_db_sketch.jpg)
@@ -151,16 +151,48 @@ A schedule creates and populates a mapping from pickups to matches. To do this, 
 
 ## Approach
 
-// TODO - Explain why I used database
+##### Q: Why did you use a database?
+I decided to let a RDBMS handle parsing the CSV would be easier than rolling my own parser. Also, a database allowed me to easily inspect the data.
+ 
+I started with Postgres. Postgres supports a *timestamptz*, or *timestamp with time zone*, datatype which handles ISO 8601 temporal data, including the UTC offset.
 
-// TODO - Explain why I switched from Postgres to H2
+##### Q: Why did you switch from Postgres to H2?
+Because setting up Postgres and managing a connection would require more configuration for me or the user, I started looking into embedded databases as a substitute. After looking at Apache Derby, Java DB, and H2, I determined that H2 had the best support for the temporal values I would be using. Unfortunately, H2 would drop the UTC offset when parsing the Pickups CSV. This was acceptable as I could re-calculate the UTC offset by using the timeZoneId and Java 8's Date API.
+
+##### Q: What is k-sum? What does it solve? Why did you ultimately not use it? 
 
 // TODO - Explain failed attempt using generalized k-sum (Reason: required perfect matches)
 
+
 // TODO - Explain why I attempted k-sum (Reason: I realized this was going the algorithm be very computationally expensive)
 
+##### Q: Why did you use parallel streams?
+
+In my first algorithm, it was taking around 5 seconds on my laptop to compute a four recipient matches for each pickup. With ~200 pickups, that meant almost 20 minutes! This wasn't including the five or six recipient matches, which would my computer wouldn't have been able to handle.
+
+Using link I found from the References section in 'Effective Java - 3rd Edition' called [*When to use parallel streams*](http://gee.cs.oswego.edu/dl/html/StreamParallelGuidance.html), I determined that parallel streams could be used to cut down on this time.
+
+Reasons this worked:
+1. A list of all pickups are splittable into pickups
+2. Each pickup in pickups is independent of the others (see [my initial observation](https://gitlab.com/hkailahi/copia/blob/master/README.md#initial_thoughts))
+3. The algorithm is computationally expensive, as another nested traversal of recipients is required for finding matches for each additional recipient in a match (N >= 10000)
+4. MatchMap can be turned to ConcurrentHashMap to synchronize on writes
+
+Using parallel streams allows me to compute four recipient matches on my laptop in less than five minutes.
+
+##### Q: Why are you sorting each list of recipients before adding them to the *matchMap* hashtable?
+
+I use a HashSet data structure to ensure that I do not add duplicate matches into the *matchMap*. A list of recipients r1 containing the ordered pair (recipient #7, recipient #121) would not be counted as a duplicate to list r2 containing the ordered pair (recipient #121, recipient #7) because a list datatype contains the notion of order. Thus, sorting each list prior allows me to know that logical duplicates will not be added.  
+
+##### Q: Why did you only find one through four recipient matches?
+
+// TODO - explain that my computer can't handle it
+
+
 ## Unit test results
-## Overall result
+
+// TODO - talk about tests
+
 ## Results analysis
 
 // TODO - 1604551 matches
@@ -174,3 +206,5 @@ A schedule creates and populates a mapping from pickups to matches. To do this, 
 // TODO - Show problem pickups (aka no matches or easily found matches), and how I dealt with them (in k-sum reasearch)
 
 ## Conclusion
+
+// TODO - talk about tests
