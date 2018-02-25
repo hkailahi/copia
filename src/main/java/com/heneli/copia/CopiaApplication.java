@@ -70,7 +70,7 @@ public class CopiaApplication implements CommandLineRunner {
 
 		/* == NOTE: To run queries in H2, comment out this line out and uncomment the last two lines == */
 		/* == Please note, you will have to manually shut down the server! == */
-		SpringApplication.exit(context);
+//		SpringApplication.exit(context);
 
 //		System.out.println("You can run your own queries on the database at http://localhost:8080/h2");
 //		System.out.println("To stop the server, press control-c twice.");

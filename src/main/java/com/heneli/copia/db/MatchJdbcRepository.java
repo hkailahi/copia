@@ -1,11 +1,12 @@
 package com.heneli.copia.db;
 
 import com.heneli.copia.model.Match;
-import com.heneli.copia.model.Pickup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.io.File;
 
 @Repository
 public class MatchJdbcRepository {
@@ -73,12 +74,28 @@ public class MatchJdbcRepository {
     }
 
     public void exportMatchesToCSV() {
+        deleteOldCSVIfExists("matches.csv");
+
         jdbcTemplate.update("CALL CSVWRITE('matches.csv', 'SELECT * FROM matches');");
     }
 
     public void exportSortedMatchesToCSV() {
-        jdbcTemplate.update("CALL CSVWRITE('ordered_matches.csv', 'SELECT * FROM matches "
+        deleteOldCSVIfExists("sorted_matches.csv");
+
+        jdbcTemplate.update("CALL CSVWRITE('sorted_matches.csv', 'SELECT * FROM matches "
                 + "ORDER BY PickupId, Deliveries, Distance')");
+    }
+
+    public void deleteOldCSVIfExists(String fileName) {
+        StringBuilder filePath = new StringBuilder();
+        filePath.append(System.getProperty("user.dir"));
+        filePath.append("/");
+        filePath.append(fileName);
+
+        File f = new File(filePath.toString());
+        if (f.exists() && !f.isDirectory()) {
+            f.delete();
+        }
     }
 
 
