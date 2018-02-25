@@ -51,7 +51,11 @@ public class CopiaApplication implements CommandLineRunner {
 				.forEach(recipients::add);
 		System.out.print("   Done.\n");
 
+		System.out.println("\nNOTE: Please note that each of the following steps may take a few minutes:\n");
+
+		System.out.print("Generating all recipient matches...");
 		Schedule schedule = new Schedule(pickups, recipients);
+		System.out.print("   Done.\n");
 
 		System.out.print("Loading matches into database...");
 		pickups.parallelStream().forEach(pickup -> {
@@ -60,17 +64,25 @@ public class CopiaApplication implements CommandLineRunner {
 				});
 		System.out.print("   Done.\n");
 
-		System.out.print("Writing matches to CSV. This will take several minutes...");
-		/* == NOTE: For sorted matches - comment out this line out and uncomment the one below == */
-		matchJdbcRepository.exportMatchesToCSV();
-//		matchJdbcRepository.exportSortedMatchesToCSV();
+		boolean getUnsorted = true;
+		boolean getSorted = false;
+
+		System.out.print("Writing matches to CSV...");
+		if (getUnsorted) matchJdbcRepository.exportMatchesToCSV();
+		if (getSorted) matchJdbcRepository.exportSortedMatchesToCSV();
 		System.out.print("   Done.\n");
 
-		System.out.println("All match-making is complete!\n");
+		StringBuilder outputFiles = new StringBuilder();
+		if (getUnsorted && getSorted) outputFiles.append("matches.csv and sorted_matches.csv files.");
+		else if (getUnsorted) outputFiles.append("matches.csv file.");
+		else outputFiles.append("sorted_matches.csv file.");
+
+		System.out.println("\nProgram complete! Results have been written to the "
+				+ outputFiles.toString());
 
 		/* == NOTE: To run queries in H2, comment out this line out and uncomment the last two lines == */
 		/* == Please note, you will have to manually shut down the server! == */
-//		SpringApplication.exit(context);
+		SpringApplication.exit(context);
 
 //		System.out.println("You can run your own queries on the database at http://localhost:8080/h2");
 //		System.out.println("To stop the server, press control-c twice.");

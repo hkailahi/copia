@@ -1,5 +1,7 @@
 ### Project Specific ###
 *.txt
+matches.csv
+sorted_matches.csv
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

@@ -31,7 +31,6 @@ public class Schedule {
             filteredPickups.add(pickup);
         }
 
-        System.out.print("Generating all recipient matches. This may take a couple minutes...");
         pickups.parallelStream().forEach(pickup -> {
             List<Match> m = getAllRecipientMatches(pickup, qualifiedRecipientMap.get(pickup.getPickupId()));
             if (m != null) {
@@ -44,8 +43,6 @@ public class Schedule {
                 }
             }
         });
-        System.out.print("   Done.\n");
-
     }
 
     public static List<Recipient> findQualifiedRecipients(Pickup p, List<Recipient> rs) {
