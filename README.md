@@ -145,8 +145,8 @@ A schedule creates and populates a mapping from pickups to matches. To do this, 
 
 // TODO - summarize first sketches from initial_thoughts.md and link to it for further exploration
 
-![Screenshot of Algo and Objects sketch](docs/img/initial_oo_algo_sketch.png)
-![Screenshot of DB Sketch](docs/img/initial_db_sketch.png)
+![Screenshot of Algo and Objects sketch](docs/img/initial_oo_algo_sketch.jpg)
+![Screenshot of DB Sketch](docs/img/initial_db_sketch.jpg)
 ![Screenshot of Schedule Sketch](docs/img/initial_schedule_design.png)
 
 ## Approach
