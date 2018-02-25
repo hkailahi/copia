@@ -6,8 +6,11 @@ Welcome to Copia! This is a simplified scheduling algorithm for matches food don
 
 # Table of Contents
 
-- [Configuration]()
-- [Rules]()
+- [Configuration](https://gitlab.com/hkailahi/copia/blob/master/README.md#configuration)
+    - [Quick Start](https://gitlab.com/hkailahi/copia/blob/master/README.md#quick-start)
+    - [Step By Step](https://gitlab.com/hkailahi/copia/blob/master/README.md#step-by-step)
+    - [Interact with Database]()
+- [Rules](https://gitlab.com/hkailahi/copia/blob/master/README.md#rules)
 - [Implementation Details]()
     - [Server]()
         - [Overview]()
@@ -78,6 +81,9 @@ Welcome to Copia! This is a simplified scheduling algorithm for matches food don
     ```bash
     $ java -jar target/copia-0.0.1-SNAPSHOT.jar
     ```
+    
+## Interact with Database
+    - To interact with the embedded H2 database, please toggle // todo - some boolean in CopiaApplication.java
     
 # Rules
 
