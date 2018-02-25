@@ -89,7 +89,7 @@ This project was built with Spring Boot (Java) and H2.
 
 # Rules
 
-// TODO - 5 miles, categories vs restrictions, open at same time, match from one pickup to many recipients
+Project instructions hidden.
 
 # Implementation Details
 
@@ -134,9 +134,7 @@ A schedule creates and populates a mapping from pickups to matches. To do this, 
 
 #### Tables
 
-#### Using H2 with Java
-
-jdbcTemplate
+// TODO - Add sketch with Matches, Pickup, Recipient tables
 
 # How I Made It
 ## Initial thoughts
@@ -149,6 +147,7 @@ jdbcTemplate
 
 ![Screenshot of Algo and Objects sketch](docs/img/initial_oo_algo_sketch.png)
 ![Screenshot of DB Sketch](docs/img/initial_db_sketch.png)
+![Screenshot of Schedule Sketch](docs/img/initial_schedule_design.png)
 
 ## Approach
 
