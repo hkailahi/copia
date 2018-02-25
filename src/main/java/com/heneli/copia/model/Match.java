@@ -41,7 +41,5 @@ public class Match {
         this.recipientId6 = (recipientList.size() > 5) ? recipientList.get(5).getRecipientId() : null;
     }
 
-    public Match() {
-
-    }
+    public Match() {}
 }
