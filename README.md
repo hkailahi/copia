@@ -15,17 +15,28 @@ All performance metrics are from running the program on my Early 2011 MacBook Pr
     - [Step By Step](https://gitlab.com/hkailahi/copia/blob/master/README.md#step-by-step)
     - [Interact with Database](https://gitlab.com/hkailahi/copia/blob/master/README.md#interact-with-database)
 - [Rules](https://gitlab.com/hkailahi/copia/blob/master/README.md#rules)
-- [Implementation Details]()
-    - [High Level Summary]()
-    - [Core Datatypes]()
-    - [Schedule]()
-    - [Database]()
-        - [Tables]()
-- [How I Made It]()
-    - [Initial thoughts]()
-    - [Approach]()
-    - [Results analysis]()
-- [Conclusion]()
+- [Implementation Details](https://gitlab.com/hkailahi/copia/blob/master/README.md#implementation-details)
+    - [Program Steps](https://gitlab.com/hkailahi/copia/blob/master/README.md#program-steps)
+    - [Core Datatypes](https://gitlab.com/hkailahi/copia/blob/master/README.md#core-datatypes)
+        - User
+        - Pickup
+        - Recipient
+        - Match
+    - [Schedule](https://gitlab.com/hkailahi/copia/blob/master/README.md#schedule)
+- [How I Made It](https://gitlab.com/hkailahi/copia/blob/master/README.md#how-i-made-it)
+    - [Initial Thoughts](https://gitlab.com/hkailahi/copia/blob/master/README.md#initial-thoughts)
+        - 1-to-Many, Domain->Codomain
+        - Pre-coding Sketches
+    - [Approach](https://gitlab.com/hkailahi/copia/blob/master/README.md#approach)
+        - [Why did you use a database?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-why-did-you-use-a-database)
+        - [Why did you switch from Postgres to H2?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-why-did-you-switch-from-postgres-to-h2)
+        - [What is a k-sum? What does it solve? Why did you ultimately not use it?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-what-is-k-sum-what-does-it-solve-why-did-you-ultimately-not-use-it)
+        - [Why did you use parallel streams?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-why-did-you-use-parallel-streams)
+        - [Why are you sorting each list of recipients before adding them to the matchMap hashtable?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-why-are-you-sorting-each-list-of-recipients-before-adding-them-to-the-matchmap-hashtable)
+    - [Results Analysis]()
+        - [Why do larger matches exist that contain smaller matches?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-why-do-larger-matches-exist-that-contain-smaller-matches)
+        - [How many matches? How many pickups can't completed by going to one recipient?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-how-many-matches-how-many-pickups-cant-completed-by-going-to-one-recipient)
+- [Conclusion](https://gitlab.com/hkailahi/copia/blob/master/README.md#conclusion)
 
 # Configuration
 ## Quick Start
@@ -122,7 +133,7 @@ A *Schedule* creates and populates a mapping from pickups to matches. To do this
 
 # How I Made It
 
-## Initial thoughts
+## Initial Thoughts
 
 Please see all initial thoughts [here](docs/initial_thoughts.md)!
 
