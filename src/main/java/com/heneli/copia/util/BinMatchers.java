@@ -1,9 +1,7 @@
 package com.heneli.copia.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BinMatchers {
 
@@ -30,75 +28,6 @@ public class BinMatchers {
     public static boolean isOnlyOneToSixBinMatch(int provide, int accept1, int accept2, int accept3, int accept4, int accept5, int accept6) {
         return  (provide & (accept1 | accept2 | accept3 | accept4 | accept5)) == provide;
     }
-
-
-
-    /* ===================================================================================== */
-
-    public static boolean isOneToOneBinMatch(int provide, int accept) {
-        return isOnlyOneToOneBinMatch(provide, accept);
-    }
-
-    public static boolean isOneToTwoBinMatch(int provide, int accept1, int accept2) {
-        List smallerMatches = findMatchCombinations(Arrays.asList(accept1, accept2))
-                .stream()
-                .filter(c -> isOnlyOneToOneBinMatch(provide, c.get(0)))
-                .collect(Collectors.toList());
-
-        if (smallerMatches.size() != 0)
-            return false;
-        else
-            return isOnlyOneToTwoBinMatch(provide, accept1, accept2);
-    }
-
-    public static boolean isOneToThreeBinMatch(int provide, int accept1, int accept2, int accept3) {
-        List smallerMatches = findMatchCombinations(Arrays.asList(accept1, accept2, accept3))
-                .stream()
-                .filter(c -> isOnlyOneToOneBinMatch(provide, c.get(0)))
-                .filter(c -> isOnlyOneToTwoBinMatch(provide, c.get(0), c.get(1)))
-                .collect(Collectors.toList());
-
-        if (smallerMatches.size() != 0) return false;
-        else return  (provide & (accept1 | accept2 | accept3)) == provide;
-    }
-
-
-    public static boolean isOneToFourBinMatch(int provide, int accept1, int accept2, int accept3, int accept4) {
-        List smallerMatches = findMatchCombinations(Arrays.asList(accept1, accept2, accept3, accept4))
-                .stream()
-                .filter(c -> isOnlyOneToOneBinMatch(provide, c.get(0)))
-                .filter(c -> isOnlyOneToTwoBinMatch(provide, c.get(0), c.get(1)))
-                .filter(c -> isOnlyOneToThreeBinMatch(provide, c.get(0), c.get(1), c.get(2)))
-                .collect(Collectors.toList());
-
-        if (smallerMatches.size() != 0) return false;
-        else return  (provide & (accept1 | accept2 | accept3 | accept4)) == provide;
-    }
-
-    public static boolean isOneToFiveBinMatch(int provide, int accept1, int accept2, int accept3, int accept4, int accept5) {
-        List smallerMatches = findMatchCombinations(Arrays.asList(accept1, accept2, accept3, accept4, accept5))
-                .stream()
-                .filter(c -> isOnlyOneToOneBinMatch(provide, c.get(0)))
-                .filter(c -> isOnlyOneToTwoBinMatch(provide, c.get(0), c.get(1)))
-                .filter(c -> isOnlyOneToThreeBinMatch(provide, c.get(0), c.get(1), c.get(2)))
-                .filter(c -> isOnlyOneToFourBinMatch(provide, c.get(0), c.get(1), c.get(2), c.get(3)))
-                .collect(Collectors.toList());
-
-        if (smallerMatches.size() != 0) return false;
-
-        return  (provide & (accept1 | accept2 | accept3 | accept4 | accept5)) == provide;
-    }
-
-//    public static boolean isOneToSixBinMatch(int provide, int accept1, int accept2, int accept3, int accept4, int accept5, int accept6) {
-//        List smallerMatches = findMatchCombinations(Arrays.asList(accept1, accept2, accept3, accept4, accept5, accept6))
-//                .stream()
-//                .filter(c -> isOneToFiveBinMatch(provide, c.get(0), c.get(1), c.get(2), c.get(3), c.get(4)))
-//                .collect(Collectors.toList());
-//
-//        if (smallerMatches.size() != 0) return false;
-//
-//        return  (provide & (accept1 | accept2 | accept3 | accept4 | accept5 | accept6)) == provide;
-//    }
 
     // K-combinations where k = (n - 1) .. (1)
     public static List<List<Integer>> findMatchCombinations(List<Integer> input) {
@@ -130,7 +59,7 @@ public class BinMatchers {
         return subsets;
     }
 
-    // generate subset by index sequence
+    // Generate subset by index sequence
     public static List<Integer> getSubset(List<Integer> input, int[] subset) {
         List<Integer> result = new ArrayList<>();
 

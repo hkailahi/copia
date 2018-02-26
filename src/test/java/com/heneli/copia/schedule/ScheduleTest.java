@@ -49,7 +49,7 @@ public class ScheduleTest {
 
         schedule = new Schedule(pickups, recipients);
     }
-    
+
     @Test
     public void generateSchedule() {
         assertEquals(schedule.getMatches(pickups.get(0)).get(0).getPickupId(), 1);
