@@ -66,7 +66,7 @@ public class BinMatchersTest {
         assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept2, 0));
         assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept3, 0));
         assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept4, 0));
-        
+
         assertTrue(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept5, 0));
     }
 }
