@@ -43,6 +43,7 @@ public class BinMatchersTest {
         assertFalse(BinMatchers.isOnlyOneToOneBinMatch(provide5, accept2));
         assertFalse(BinMatchers.isOnlyOneToOneBinMatch(provide5, accept3));
         assertFalse(BinMatchers.isOnlyOneToOneBinMatch(provide5, accept4));
+
         assertTrue(BinMatchers.isOnlyOneToOneBinMatch(provide5, accept5));
     }
 
@@ -50,8 +51,10 @@ public class BinMatchersTest {
     public void isOnlyOneToManyBinMatch() {
         assertTrue(BinMatchers.isOnlyOneToTwoBinMatch(provide1, accept1, accept2));
         assertTrue(BinMatchers.isOnlyOneToTwoBinMatch(provide1, accept2, accept1));
-        assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide1, accept2, accept3));
         assertTrue(BinMatchers.isOnlyOneToTwoBinMatch(provide1, accept1, accept3));
+
+        assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide1, accept2, accept3));
+
 
         assertTrue(BinMatchers.isOnlyOneToTwoBinMatch(provide4, accept1, 0));
         assertTrue(BinMatchers.isOnlyOneToTwoBinMatch(provide4, accept2, 0));
@@ -63,6 +66,7 @@ public class BinMatchersTest {
         assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept2, 0));
         assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept3, 0));
         assertFalse(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept4, 0));
+        
         assertTrue(BinMatchers.isOnlyOneToTwoBinMatch(provide5, accept5, 0));
     }
 }
