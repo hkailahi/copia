@@ -182,18 +182,18 @@ In my first algorithm, it was taking around 5 seconds to compute each pickups' f
 Using link I found from the References section in 'Effective Java - 3rd Edition' called [*When to use parallel streams*](http://gee.cs.oswego.edu/dl/html/StreamParallelGuidance.html), I determined that parallel streams could be used to cut down on this time.
 
 Reasons it worked:
-1. A list of all pickups are splittable into pickups
-2. Each pickup in the list of all pickups is independent of the others (see [my initial observation](https://gitlab.com/hkailahi/copia/blob/master/README.md#initial_thoughts))
+1. A list of all pickups is splittable into individual pickups
+2. Individual pickups are independent of the each other, (i.e., no path from one pickup to another exists - see [my initial observation](https://gitlab.com/hkailahi/copia/blob/master/README.md#initial_thoughts))
 3. The algorithm is computationally expensive, as another nested traversal of recipients is required for finding matches for each additional recipient in a match (N >= 10000)
 4. MatchMap can be turned to ConcurrentHashMap to synchronize on writes
 
 Using parallel streams allows me to compute four recipient matches on my laptop in less than five minutes.
 
-If my application hadn't been mostly single-threaded, it is likely that I wouldn't have seen such tremendous improvements. Since I was using mostly using functional programming style in the algorithm code, it was fairly straightforward to make use of them.   
+If my application hadn't been mostly single-threaded I wouldn't have seen such tremendous improvements. Since I was using using a functional programming style in the algorithm, adapting the code for parallelism was fairly straightforward.
 
 ##### Q: Why are you sorting each list of recipients before adding them to the *matchMap* hashtable?
 
-I use a HashSet data structure to ensure that I do not add duplicate matches into the *matchMap*. A list of recipients r1 containing the ordered pair (recipient #7, recipient #121) would not be counted as a duplicate to list r2 containing the ordered pair (recipient #121, recipient #7) because a list datatype contains the notion of order. Thus, sorting each list prior allows me to know that logical duplicates will not be added.  
+I use a HashSet data structure to ensure that I do not add duplicate matches into the *matchMap*. A list of recipients r1 containing the ordered pair (recipient #7, recipient #121) would not be counted as a duplicate to list r2 containing the ordered pair (recipient #121, recipient #7) because the list datatype contains the notion of order. Thus, sorting each list prior allows me to know that logical duplicates will not be added.  
 
 [↥ back to top](https://gitlab.com/hkailahi/copia/blob/master/README.md#copia)
 
@@ -201,11 +201,11 @@ I use a HashSet data structure to ensure that I do not add duplicate matches int
 
 ##### Q: Why do larger matches exist that contain smaller matches?
 
-These can be seen as partial deliveries to recipients willing to take more in order to allow to other recipients who would otherwise be left out
+These cases can be seen as partial deliveries to recipients who could have taken more in order to allow receival by other recipients who would otherwise be left out.
 
 Eliminating these larger matches should not be done because it is: 
 1. Not useful
-    - We want to deliver smaller subsets anyways, so computing bigger ones should actually be avoided.
+    - We want to deliver the smaller subsets anyways, so requiring the generation of bigger ones should actually be avoided.
 2. Not possible.. at least on my laptop 
     - This is a powerset problem, where all subsets of a larger match must be checked. This would require an exponential function (O(2^n)) nested at each level inside an already expensive O(pbq^6)+ algorithm.
 
@@ -213,7 +213,7 @@ Eliminating these larger matches should not be done because it is:
 
 I was able to compute 1604551 matches. 
 
-There are 12 pickups that are unable to complete deliveries without using more than one recipient. Of those 12, 4 cannot complete any match. 3 of the 4 do not provide any food. As they have nothing to provide, it makes sense that they are unable to make a match. The remaining pickup is pickup # from James Whitehouse, who can at best make a partial match with recipient #131 Maria Allen by providing raw meat and seafood. No qualified recipients will take his hot, prepared food.
+There are 12 pickups that are unable to complete deliveries without using more than one recipient. Of those 12, 4 cannot complete any match. 3 of the 4 do not provide any food. As they have nothing to provide, it makes sense that they are unable to make a match. The remaining pickup is pickup #60 from James Whitehouse, who can at best make a partial match with recipient #131 Maria Allen by providing raw meat and seafood. No qualified recipients will take his hot, prepared food.
 
 You can see more in [here](docs/match_chart.md) and [here](docs/four_recipient_delivery.md).
 
