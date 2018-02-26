@@ -79,17 +79,16 @@ All performance metrics are from running the program on my Early 2011 MacBook Pr
     ```
     
 ## Interact with Database
-- To run SQL queries in H2, please change the boolean [willInteractWithDatabase](https://gitlab.com/hkailahi/copia/blob/master/src/main/java/com/heneli/copia/CopiaApplication.java#L84) in  to true. Please note, you will have to manually shut down the server after you are done with H2!
+- To run SQL queries in H2, please update the boolean [willInteractWithDatabase](https://gitlab.com/hkailahi/copia/blob/master/src/main/java/com/heneli/copia/CopiaApplication.java#L84) to true. Please note, you will have to manually shut down the server once you are finished!
 
 # Rules
 
-Project instructions hidden.
+(Project instructions hidden.)
 
 # Implementation Details
 
-### High Level Summary
+#### Program Steps
 
-Program Steps:
 1. Spring Boot launches Tomcat server with H2 instance available on *localhost:8080/h2*
 2. *schema.sql* in src/java/resources/ gets ran before *run()* method in core app (*CopiaApplication.java*), which imports Pickups and Recipients CSVs to tables, and intializes empty *Matches* table
 3. List of all pickups and list of all recipients are loaded from H2 into the core application
