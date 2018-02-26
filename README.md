@@ -24,9 +24,8 @@ All performance metrics are from running the program on my Early 2011 MacBook Pr
 - [How I Made It]()
     - [Initial thoughts]()
     - [Approach]()
-    - [Unit test results]()
     - [Results analysis]()
-    - [Conclusion]()
+- [Conclusion]()
 
 # Configuration
 ## Quick Start
@@ -178,23 +177,28 @@ If my application hadn't been mostly single-threaded, it is likely that I wouldn
 
 I use a HashSet data structure to ensure that I do not add duplicate matches into the *matchMap*. A list of recipients r1 containing the ordered pair (recipient #7, recipient #121) would not be counted as a duplicate to list r2 containing the ordered pair (recipient #121, recipient #7) because a list datatype contains the notion of order. Thus, sorting each list prior allows me to know that logical duplicates will not be added.  
 
-##### Q: Why did you only find one through four recipient matches?
+## Results Analysis
 
-// TODO - explain that my computer can't handle it
+##### Q: Why do larger matches exist that contain smaller matches?
 
+These can be seen as partial deliveries to recipients willing to take more in order to allow to other recipients who would otherwise be left out
 
-## Results analysis
+Eliminating these larger matches should not be done because it is: 
+1. Not useful
+    - We want to deliver smaller subsets anyways, so computing bigger ones should actually be avoided)
+2. Not possible.. at least on my laptop 
+    - This is a powerset problem, where all subsets of a larger match must be checked. This would require an exponential function (O(2^n)) nested at each level inside an already expensive O(pr^6)+ algorithm.
 
-// TODO - 1604551 matches
+##### Q: How many matches? How many pickups can't completed by going to one recipient? 
 
-// TODO - Explain repeat subsets exist, which are partial deliveries to recipients in order to get more
+I was able to compute 1604551 matches. 
 
-// TODO - Explain why eliminating subsets is 1. not useful (we want to deliver smaller subsets anyways, so computing bigger ones should actually be avoided)
+There are 12 pickups that are unable to complete deliveries without using more than one recipient. Of those 12, 4 cannot complete any match. 3 of the 4 do not provide any food. As they have nothing to provide, it makes sense that they are unable to make a match. The remaining pickup is pickup # from James Whitehouse, who can at best make a partial match with recipient #131 Maria Allen by providing raw meat and seafood. No qualified recipients will take his hot, prepared food.
 
-// TODO - Explain why eliminating subsets is 2. not possible.. at least on my laptop (powerset problem - exponential algorithm nested at each level of a O(pr^6) + algorithm)
-
-// TODO - Show problem pickups (aka no matches or easily found matches), and how I dealt with them (in k-sum reasearch)
+You can see more in [here](docs/match_chart.md) and [here](docs/four_recipient_delivery.md).
 
 ## Conclusion
 
-// TODO - talk about tests
+This was a very computationally intensive problem. While the algorithm is fine for an increasing amount of pickups, it is very sensitive to increases in the number of qualified recipients (O(pbr^6)+). Finding the qualified recipients for all pickups requires much less computation (O(pbr) where b is the longer length of either the open hours field or the restrictions field in recipients). As real estate is expensive, it is unlikely that an extremely dense supply of recipients will occur. 
+
+Cities are a problem as they are dense and numerous along all of our parameters. They are also the most likely customers. Aggressive filtering, such as only allowing small distance deliveries, keeping the number of food categories small, and only accepting pickups during primary hours, is essential to making match-making manageable. It in real world algorithm, tuning could be done to shrink delivery radii in cities. This would work out, as a city's is more likely to provide infrastructure for numerous recipients per unit area. Another improvement would be introducing a feature that cheapened deliveries to recipients that accepted all that a pickup had at once. This would allow us to not have use the nested parts of a multi-recipient algorithm as often. Finally, match possibilites could be pre-computed for given areas so that a new pickup could use cached solution.   
