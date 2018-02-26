@@ -10,6 +10,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class ScheduleTest {
 
     private Schedule schedule;
@@ -21,7 +23,7 @@ public class ScheduleTest {
 
 
         Pickup p1 = new Pickup(1, 63, LocalDateTime.now(), ZoneId.of("America/Los_Angeles"));
-        Pickup p2 = new Pickup(1, 0, LocalDateTime.now(), ZoneId.of("America/Los_Angeles"));
+        Pickup p2 = new Pickup(2, 0, LocalDateTime.now(), ZoneId.of("America/Los_Angeles"));
 
         // 63 = 0b111111 -> takes no food
         // 65535 = 0b11..11 -> open at all hours
@@ -47,20 +49,11 @@ public class ScheduleTest {
 
         schedule = new Schedule(pickups, recipients);
     }
-
-    @Test
-    public void getMatches() {
-    }
-
+    
     @Test
     public void generateSchedule() {
+        assertEquals(schedule.getMatches(pickups.get(0)).get(0).getPickupId(), 1);
+        assertEquals(schedule.getMatches(pickups.get(1)), null);
     }
 
-    @Test
-    public void findQualifiedRecipients() {
-    }
-
-    @Test
-    public void getAllRecipientMatches() {
-    }
 }
