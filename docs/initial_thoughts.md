@@ -111,7 +111,7 @@
 - Initial thoughts on resulting CSV/DB table format
   - [DB Tables Sketch](docs/img/initial_db_sketch.jpg)
     - Make two tables
-    - Recipent_Match_Table
+    - Recipient_Match_Table
       - Has all matches with a match_id, with a match_weight/weight which we'll use to sort matches from most favorable to least favorable.
       - Also meta-info.
       - Match has one pickup (pickup_id/provider)

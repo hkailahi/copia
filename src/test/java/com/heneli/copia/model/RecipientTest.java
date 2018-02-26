@@ -59,7 +59,7 @@ public class RecipientTest {
         LocalDateTime pickupHour1 = LocalDateTime.of(LocalDate.now(), LocalTime.of(10, 0));
         LocalDateTime pickupHour2 = LocalDateTime.of(LocalDate.now(), LocalTime.of(17, 0));
         LocalDateTime pickupHour3 = LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 30));
-        LocalDateTime pickupHour4 = LocalDateTime.of(LocalDate.now(), LocalTime.of(5, 00)); // Hours start at 8, should fail
+        LocalDateTime pickupHour4 = LocalDateTime.of(LocalDate.now(), LocalTime.of(5, 0)); // Hours start at 8, should fail
 
         assertTrue(recipient1.isOpenAt(pickupHour1));
         assertTrue(recipient1.isOpenAt(pickupHour2));

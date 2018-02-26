@@ -20,57 +20,59 @@ public class MatchJdbcRepository {
     }
 
     public int insert(Match match) {
-        if (match.getDeliveries() == 1)
-            return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1) " + "values(?, ?, ?, ?)",
-                    match.getDeliveries(),
-                    match.getDistance(),
-                    match.getPickupId(),
-                    match.getRecipientId1());
-        else if (match.getDeliveries() == 2)
-            return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2) " + "values(?, ?, ?, ?, ?)",
-                    match.getDeliveries(),
-                    match.getDistance(),
-                    match.getPickupId(),
-                    match.getRecipientId1(),
-                    match.getRecipientId2());
-        else if (match.getDeliveries() == 3)
-            return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3) " + "values(?, ?, ?, ?, ?, ?)",
-                    match.getDeliveries(),
-                    match.getDistance(),
-                    match.getPickupId(),
-                    match.getRecipientId1(),
-                    match.getRecipientId2(),
-                    match.getRecipientId3());
-        else if (match.getDeliveries() == 4)
-            return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3, RecipientId4) " + "values(?, ?, ?, ?, ?, ?, ?)",
-                    match.getDeliveries(),
-                    match.getDistance(),
-                    match.getPickupId(),
-                    match.getRecipientId1(),
-                    match.getRecipientId2(),
-                    match.getRecipientId3(),
-                    match.getRecipientId4());
-        else if (match.getDeliveries() == 5)
-            return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3, RecipientId4, RecipientId5) " + "values(?, ?, ?, ?, ?, ?, ?, ?)",
-                    match.getDeliveries(),
-                    match.getDistance(),
-                    match.getPickupId(),
-                    match.getRecipientId1(),
-                    match.getRecipientId2(),
-                    match.getRecipientId3(),
-                    match.getRecipientId4(),
-                    match.getRecipientId5());
-        else
-            return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3, RecipientId4, RecipientId5, RecipientId6) " + "values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    match.getDeliveries(),
-                    match.getDistance(),
-                    match.getPickupId(),
-                    match.getRecipientId1(),
-                    match.getRecipientId2(),
-                    match.getRecipientId3(),
-                    match.getRecipientId4(),
-                    match.getRecipientId5(),
-                    match.getRecipientId6());
+        switch (match.getDeliveries()) {
+            case 1:
+                return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1) " + "values(?, ?, ?, ?)",
+                        match.getDeliveries(),
+                        match.getDistance(),
+                        match.getPickupId(),
+                        match.getRecipientId1());
+            case 2:
+                return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2) " + "values(?, ?, ?, ?, ?)",
+                        match.getDeliveries(),
+                        match.getDistance(),
+                        match.getPickupId(),
+                        match.getRecipientId1(),
+                        match.getRecipientId2());
+            case 3:
+                return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3) " + "values(?, ?, ?, ?, ?, ?)",
+                        match.getDeliveries(),
+                        match.getDistance(),
+                        match.getPickupId(),
+                        match.getRecipientId1(),
+                        match.getRecipientId2(),
+                        match.getRecipientId3());
+            case 4:
+                return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3, RecipientId4) " + "values(?, ?, ?, ?, ?, ?, ?)",
+                        match.getDeliveries(),
+                        match.getDistance(),
+                        match.getPickupId(),
+                        match.getRecipientId1(),
+                        match.getRecipientId2(),
+                        match.getRecipientId3(),
+                        match.getRecipientId4());
+            case 5:
+                return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3, RecipientId4, RecipientId5) " + "values(?, ?, ?, ?, ?, ?, ?, ?)",
+                        match.getDeliveries(),
+                        match.getDistance(),
+                        match.getPickupId(),
+                        match.getRecipientId1(),
+                        match.getRecipientId2(),
+                        match.getRecipientId3(),
+                        match.getRecipientId4(),
+                        match.getRecipientId5());
+            default:
+                return jdbcTemplate.update("insert into matches (Deliveries, Distance, PickupId, RecipientId1, RecipientId2, RecipientId3, RecipientId4, RecipientId5, RecipientId6) " + "values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        match.getDeliveries(),
+                        match.getDistance(),
+                        match.getPickupId(),
+                        match.getRecipientId1(),
+                        match.getRecipientId2(),
+                        match.getRecipientId3(),
+                        match.getRecipientId4(),
+                        match.getRecipientId5(),
+                        match.getRecipientId6());
+        }
     }
 
     public void exportMatchesToCSV() {
@@ -86,13 +88,12 @@ public class MatchJdbcRepository {
                 + "ORDER BY PickupId, Deliveries, Distance')");
     }
 
-    public void deleteOldCSVIfExists(String fileName) {
-        StringBuilder filePath = new StringBuilder();
-        filePath.append(System.getProperty("user.dir"));
-        filePath.append("/");
-        filePath.append(fileName);
+    private void deleteOldCSVIfExists(String fileName) {
+        String filePath = System.getProperty("user.dir")
+                                                + "/"
+                                                + fileName;
 
-        File f = new File(filePath.toString());
+        File f = new File(filePath);
         if (f.exists() && !f.isDirectory()) {
             f.delete();
         }

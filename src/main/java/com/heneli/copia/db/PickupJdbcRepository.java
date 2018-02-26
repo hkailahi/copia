@@ -24,21 +24,13 @@ public class PickupJdbcRepository {
     }
 
     public int deleteById(int id) {
-        return jdbcTemplate.update("delete from pickups where PickupId=?", new Object[] {
-                id
-        });
+        return jdbcTemplate.update("delete from pickups where PickupId=?", id);
     }
     public int insert(Pickup pickup) {
-        return jdbcTemplate.update("insert into pickups (PickupId, FirstName, Categories) " + "values(?,  ?, ?)",
-                new Object[] {
-                        pickup.getPickupId(), pickup.getFirstName(), pickup.getCategories()
-                });
+        return jdbcTemplate.update("insert into pickups (PickupId, FirstName, Categories) " + "values(?,  ?, ?)", pickup.getPickupId(), pickup.getFirstName(), pickup.getCategories());
     }
     public int update(Pickup pickup) {
-        return jdbcTemplate.update("update pickups " + " set FirstName = ?, Categories = ? " + " where PickupId = ?",
-                new Object[] {
-                        pickup.getPickupId(), pickup.getFirstName(), pickup.getCategories()
-                });
+        return jdbcTemplate.update("update pickups " + " set FirstName = ?, Categories = ? " + " where PickupId = ?", pickup.getPickupId(), pickup.getFirstName(), pickup.getCategories());
     }
 
 }

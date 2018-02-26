@@ -42,13 +42,11 @@ public class CopiaApplication implements CommandLineRunner {
 		List<Recipient> recipients = new ArrayList<>();
 
 		System.out.print("Loading Pickups from database...");
-		pickupJdbcRepository.findAll()
-				.forEach(pickups::add);
+		pickups.addAll(pickupJdbcRepository.findAll());
 		System.out.print("   Done.\n");
 
 		System.out.print("Loading Recipients from database...");
-		recipientJdbcRepository.findAll()
-				.forEach(recipients::add);
+		recipients.addAll(recipientJdbcRepository.findAll());
 		System.out.print("   Done.\n");
 
 		System.out.println("\nNOTE: Please note that each of the following steps may take a few minutes:\n");

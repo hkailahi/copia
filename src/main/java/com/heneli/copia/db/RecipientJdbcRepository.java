@@ -24,20 +24,12 @@ public class RecipientJdbcRepository {
     }
 
     public int deleteById(long id) {
-        return jdbcTemplate.update("delete from recipients where id=?", new Object[] {
-                id
-        });
+        return jdbcTemplate.update("delete from recipients where id=?", id);
     }
     public int insert(Recipient recipient) {
-        return jdbcTemplate.update("insert into recipients (RecipientId, FirstName, Restrictions) " + "values(?,  ?, ?)",
-                new Object[] {
-                        recipient.getRecipientId(), recipient.getFirstName(), recipient.getRestrictions()
-                });
+        return jdbcTemplate.update("insert into recipients (RecipientId, FirstName, Restrictions) " + "values(?,  ?, ?)", recipient.getRecipientId(), recipient.getFirstName(), recipient.getRestrictions());
     }
     public int update(Recipient recipient) {
-        return jdbcTemplate.update("update recipients " + " set FirstName = ?, Restrictions = ? " + " where RecipientId = ?",
-                new Object[] {
-                        recipient.getRecipientId(), recipient.getFirstName(), recipient.getRestrictions()
-                });
+        return jdbcTemplate.update("update recipients " + " set FirstName = ?, Restrictions = ? " + " where RecipientId = ?", recipient.getRecipientId(), recipient.getFirstName(), recipient.getRestrictions());
     }
 }

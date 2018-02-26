@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class Schedule {
 
-    private Map<Integer, List<Match>> matchMap;
+    private final Map<Integer, List<Match>> matchMap;
 
     public List<Match> getMatches(Pickup pickup) {
         return matchMap.get(pickup.getPickupId());
@@ -22,13 +22,11 @@ public class Schedule {
         generateSchedule(pickups, recipients);
     }
 
-    public void generateSchedule(List<Pickup> pickups, List<Recipient> recipients) {
+    private void generateSchedule(List<Pickup> pickups, List<Recipient> recipients) {
         Map<Integer, List<Recipient>> qualifiedRecipientMap = new HashMap<>();
-        Set<Pickup> filteredPickups = new HashSet<>();
 
         for (Pickup pickup : pickups) {
             qualifiedRecipientMap.put(pickup.getPickupId(), findQualifiedRecipients(pickup, recipients));
-            filteredPickups.add(pickup);
         }
 
         pickups.parallelStream().forEach(pickup -> {
@@ -72,7 +70,7 @@ public class Schedule {
 
                 if (BinMatchers.isOnlyOneToTwoBinMatch(pV, a1V, a2V)) {
                     List<Recipient> recipientsPair = Arrays.asList(r1, r2);
-                    recipientsPair.sort((o1, o2) -> Double.compare(p.distance(o1), p.distance(o2)));
+                    recipientsPair.sort(Comparator.comparingDouble(p::distance));
 
                     Match twoRecipientMatch = new Match(p, recipientsPair);
 
@@ -94,7 +92,7 @@ public class Schedule {
                         if (smallerMatches.size() > 0) continue;
 
                         List<Recipient> recipientsTriple = Arrays.asList(r1, r2, r3);
-                        recipientsTriple.sort((o1, o2) -> Double.compare(p.distance(o1), p.distance(o2)));
+                        recipientsTriple.sort(Comparator.comparingDouble(p::distance));
 
                         Match threeRecipientMatch = new Match(p, recipientsTriple);
 
@@ -118,12 +116,11 @@ public class Schedule {
                             if (smallerMatches.size() > 0) continue;
 
                             List<Recipient> recipientsTriple = Arrays.asList(r1, r2, r3, r4);
-                            recipientsTriple.sort((o1, o2) -> Double.compare(p.distance(o1), p.distance(o2)));
+                            recipientsTriple.sort(Comparator.comparingDouble(p::distance));
 
                             Match fourRecipientMatch = new Match(p, recipientsTriple);
 
                             allMatches.add(fourRecipientMatch);
-                            continue;
                         }
                     }
                 }

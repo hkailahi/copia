@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class PickupRowMapper implements RowMapper {
+class PickupRowMapper implements RowMapper {
 
     @Override
     public Pickup mapRow(ResultSet rs, int i) throws SQLException {

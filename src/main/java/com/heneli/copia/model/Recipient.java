@@ -74,7 +74,7 @@ public class Recipient extends User {
         }
     }
 
-    public boolean isOpenAt(int pickupTime, int openTimes) {
+    private boolean isOpenAt(int pickupTime, int openTimes) {
         return BinMatchers.isOnlyOneToOneBinMatch(pickupTime, openTimes);
     }
 }

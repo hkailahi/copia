@@ -54,6 +54,9 @@ public class ScheduleTest {
     public void generateSchedule() {
         assertEquals(schedule.getMatches(pickups.get(0)).get(0).getPickupId(), 1);
         assertEquals(schedule.getMatches(pickups.get(1)), null);
+
+        assertEquals((int)schedule.getMatches(pickups.get(0)).get(0).getRecipientId1(),
+                recipients.get(1).getRecipientId());
     }
 
 }

@@ -6,7 +6,7 @@ I want to see if it is worth implementing a k-sum (generalization version of the
 
 In a typical scenario I would perform this operation on a sorted list of either integers or values with integer weights. As I need to match bitvectors, only perfect complements can be found in polynomial time ([O(n^(k/2) log n)][1] where k is 6). Thus, I am charting Pickup-to-Recipient pairs to see whether or not perfect complements exist in pickups that cannot be fulfilled with a single recipient.
 
-The method of using perfect complements would save a lot of computation in exchange for a small amount of space (By caching occurences of complementary values).
+The method of using perfect complements would save a lot of computation in exchange for a small amount of space (By caching occurrences of complementary values).
 
 If there are cases where no grouping of qualified recipients exists to consume all of the food provided by a pickup, I will not use this algorithm. (Conclusion: I didn't.)
 

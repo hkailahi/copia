@@ -60,7 +60,7 @@ public class BinMatchers {
     }
 
     // Generate subset by index sequence
-    public static List<Integer> getSubset(List<Integer> input, int[] subset) {
+    private static List<Integer> getSubset(List<Integer> input, int[] subset) {
         List<Integer> result = new ArrayList<>();
 
         for (int i = 0; i < subset.length; i++)
