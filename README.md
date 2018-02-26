@@ -173,7 +173,7 @@ Modifying a k-sum to find complementary bitvectors turns out to only work if the
 1. The grouping can be OR'd (bitwise) together make a bitvector (target sum) with only ones
 2. The i-th bit can be 1 in only one bitvector of any of in the grouping
 
-I [charted](docs/match_chart.md) problematic pickup candidates who did not match an one recipient matches. I decided I would use the k-sum approach if all pickups who provided food contained perfect matches. As a few did not, I could not make use of it.
+I decided I would use the k-sum approach if all pickups who provided food contained perfect matches. Then, I [charted problematic pickup candidates](docs/match_chart.md) who did not have one recipient matches. As a few did not, I could not make use of it.
 
 ##### Q: Why did you use parallel streams?
 
