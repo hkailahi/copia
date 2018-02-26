@@ -195,11 +195,11 @@ These can be seen as partial deliveries to recipients willing to take more in or
 
 Eliminating these larger matches should not be done because it is: 
 1. Not useful
-    - We want to deliver smaller subsets anyways, so computing bigger ones should actually be avoided)
+    - We want to deliver smaller subsets anyways, so computing bigger ones should actually be avoided.
 2. Not possible.. at least on my laptop 
-    - This is a powerset problem, where all subsets of a larger match must be checked. This would require an exponential function (O(2^n)) nested at each level inside an already expensive O(pr^6)+ algorithm.
+    - This is a powerset problem, where all subsets of a larger match must be checked. This would require an exponential function (O(2^n)) nested at each level inside an already expensive O(pbq^6)+ algorithm.
 
-##### Q: How many matches? How many pickups can't completed by going to one recipient? 
+##### Q: How many matches did you find? How many pickups can't completed by going to one recipient? 
 
 I was able to compute 1604551 matches. 
 
@@ -209,6 +209,6 @@ You can see more in [here](docs/match_chart.md) and [here](docs/four_recipient_d
 
 ## Conclusion
 
-This was a very computationally intensive problem. While the algorithm is fine for an increasing amount of pickups, it is very sensitive to increases in the number of qualified recipients (O(pbr^6)+). Finding the qualified recipients for all pickups requires much less computation (O(pbr) where b is the longer length of either the open hours field or the restrictions field in recipients). As real estate is expensive, it is unlikely that an extremely dense supply of recipients will occur. 
+This was a very computationally intensive problem. While the algorithm is fine for an increasing amount of pickups, it is very sensitive to increases in the number of qualified recipients (O(pbq^6)+). Finding the qualified recipients for all pickups requires much less computation (O(pbr) where b is the longer length of either the open hours field or the restrictions field in recipients). As real estate is expensive, it is unlikely that an extremely dense supply of recipients will occur. 
 
 Cities are a problem as they are dense and numerous along all of our parameters. They are also the most likely customers. Aggressive filtering, such as only allowing small distance deliveries, keeping the number of food categories small, and only accepting pickups during primary hours, is essential to making match-making manageable. It in real world algorithm, tuning could be done to shrink delivery radii in cities. This would work out, as a city's is more likely to provide infrastructure for numerous recipients per unit area. Another improvement would be introducing a feature that cheapened deliveries to recipients that accepted all that a pickup had at once. This would allow us to not have use the nested parts of a multi-recipient algorithm as often. Finally, match possibilites could be pre-computed for given areas so that a new pickup could use cached solution.   
