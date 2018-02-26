@@ -35,7 +35,7 @@ All performance metrics are from running the program on my Early 2011 MacBook Pr
         - [Why are you sorting each list of recipients before adding them to the matchMap hashtable?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-why-are-you-sorting-each-list-of-recipients-before-adding-them-to-the-matchmap-hashtable)
     - [Results Analysis]()
         - [Why do larger matches exist that contain smaller matches?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-why-do-larger-matches-exist-that-contain-smaller-matches)
-        - [How many matches? How many pickups can't completed by going to one recipient?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-how-many-matches-how-many-pickups-cant-completed-by-going-to-one-recipient)
+        - [How many matches did you find? How many pickups can't completed by going to one recipient?](https://gitlab.com/hkailahi/copia/blob/master/README.md#q-how-many-matches-how-many-pickups-cant-completed-by-going-to-one-recipient)
 - [Conclusion](https://gitlab.com/hkailahi/copia/blob/master/README.md#conclusion)
 
 # Configuration
@@ -163,7 +163,7 @@ I started with Postgres. Postgres supports a *timestamptz*, or *timestamp with t
 ##### Q: Why did you switch from Postgres to H2?
 Setting up Postgres and managing a connection would require more configuration for me or the user, so I started looking into embedded databases as a substitute. After looking at Apache Derby, Java DB, and H2, I determined that H2 had the best support for the temporal values I would be using. Unfortunately, H2 drops UTC offset information when parsing the Pickups CSV. This is acceptable for me, however, as I can re-calculate the UTC offset by using the timeZoneId and Java 8's Date API.
 
-##### Q: What is k-sum? What does it solve? Why did you ultimately not use it? 
+##### Q: What is a k-sum? What does it solve? Why did you ultimately not use it? 
 
 A k-sum is a generalization of the 2Sum and 3Sum algorithms. If a list of values exists such that two values can be added up to a given target value, a 2Sum is an efficient way to find the indices of those two elements. A 2Sum use a HashTable to cache complementary values and replaces a typical O(n^2) algorithm into a linear one. A 3Sum uses sorting and comparisons on shrinking exterior indices to find three values that add up to a given target.
 
@@ -179,17 +179,17 @@ I decided I would use the k-sum approach if all pickups who provided food contai
 
 In my first algorithm, it was taking around 5 seconds to compute each pickups' four recipient matches. With ~200 pickups, that meant almost 20 minutes! This wasn't including the five or six recipient matches, which would my computer wouldn't have been able to handle.
 
-Using link I found from the References section in 'Effective Java - 3rd Edition' called [*When to use parallel streams*](http://gee.cs.oswego.edu/dl/html/StreamParallelGuidance.html), I determined that parallel streams could be used to cut down on this time.
+Using a link I found from the References section in 'Effective Java - 3rd Edition' called [*When to use parallel streams*](http://gee.cs.oswego.edu/dl/html/StreamParallelGuidance.html), I determined that parallel streams could be used to cut down on this time.
 
 Reasons it worked:
 1. A list of all pickups is splittable into individual pickups
-2. Individual pickups are independent of the each other, (i.e., no path from one pickup to another exists - see [my initial observation](https://gitlab.com/hkailahi/copia/blob/master/README.md#initial_thoughts))
+2. Individual pickups are independent of the each other, (i.e., no path from one pickup to another exists - see [my initial observation](https://gitlab.com/hkailahi/copia/blob/master/README.md#initial-thoughts))
 3. The algorithm is computationally expensive, as another nested traversal of recipients is required for finding matches for each additional recipient in a match (N >= 10000)
-4. MatchMap can be turned to ConcurrentHashMap to synchronize on writes
+4. MatchMap can be changed into a ConcurrentHashMap for synchronization on writes
 
-Using parallel streams allows me to compute four recipient matches on my laptop in less than five minutes.
+Using parallel streams allows me to compute all four recipient matches on my laptop in less than five minutes.
 
-If my application hadn't been mostly single-threaded I wouldn't have seen such tremendous improvements. Since I was using using a functional programming style in the algorithm, adapting the code for parallelism was fairly straightforward.
+If my application hadn't been mostly single-threaded I wouldn't have seen such tremendous improvements. Since I was using a functional programming style in the algorithm, adapting the code for parallelism was fairly straightforward.
 
 ##### Q: Why are you sorting each list of recipients before adding them to the *matchMap* hashtable?
 
